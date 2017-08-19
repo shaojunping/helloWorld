@@ -112,15 +112,16 @@ int main()
 		-0.5f,  0.2f, 0.3f   // top left
 	};
 
-	unsigned int VBO, VAO, VBO1, VAO1;
+	//unsigned int VBO, VAO, VBO1, VAO1;
+	unsigned int VBO[2], VAO[2];
 	//VAO保存了我们的顶点属性配置，我们要用哪个VBO
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO); //用一个唯一的id创建一个顶点缓冲对象
+	glGenVertexArrays(1, &VAO[0]);
+	glGenBuffers(1, &VBO[0]); //用一个唯一的id创建一个顶点缓冲对象
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
+	glBindVertexArray(VAO[0]);
 
 	//将创建的缓冲绑定到GL_ARRAY_BUFFER对象上，这是一个buffer类型，glBindBUffer允许我们一次绑定到好几个不同种类的buffer上面
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); 
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	
 	//将定义好的数据绑定到buffer的内存上，第一个参数是buffer类型，我们上面设为Array。
 	//第二个参数是传递到buffer的数据的大小，单位是比特
@@ -150,13 +151,13 @@ int main()
 	//glBindVertexArray(0);
 	//region 
 	//VAO保存了我们的顶点属性配置，我们要用哪个VBO
-	glGenVertexArrays(1, &VAO1);
-	glGenBuffers(1, &VBO1); //用一个唯一的id创建一个顶点缓冲对象
+	glGenVertexArrays(1, &VAO[1]);
+	glGenBuffers(1, &VBO[1]); //用一个唯一的id创建一个顶点缓冲对象
 						   // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO1);
+	glBindVertexArray(VAO[1]);
 
 	//将创建的缓冲绑定到GL_ARRAY_BUFFER对象上，这是一个buffer类型，glBindBUffer允许我们一次绑定到好几个不同种类的buffer上面
-	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 
 	//将定义好的数据绑定到buffer的内存上，第一个参数是buffer类型，我们上面设为Array。
 	//第二个参数是传递到buffer的数据的大小，单位是比特
@@ -207,11 +208,11 @@ int main()
 
 		// draw our first triangle
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		glBindVertexArray(VAO[0]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		//glBindVertexArray(0);
-		glBindVertexArray(VAO1); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		glBindVertexArray(VAO[1]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glBindVertexArray(0); // no need to unbind it every time 
 
@@ -224,10 +225,10 @@ int main()
 	// optional: de-allocate all resources once they've outlived their purpose:
 	// ------------------------------------------------------------------------
 	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteVertexArrays(1, &VAO1);
-	glDeleteBuffers(1, &VBO1);
+	/*glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);*/
+	glDeleteVertexArrays(2, &VAO[0]);
+	glDeleteBuffers(2, &VBO[0]);
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
 	glfwTerminate();
