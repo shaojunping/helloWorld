@@ -125,12 +125,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="firstWindowUseShaderClass.cpp" />
+    <ClCompile Include="firstWindowUseShaderClassTex.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_img.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
