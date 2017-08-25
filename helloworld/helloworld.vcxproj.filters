@@ -21,10 +21,10 @@
     <ClCompile Include="Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="firstWindowUseShaderClassTex.cpp">
+    <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="stb_img.cpp">
+    <ClCompile Include="useShaderClassMixTex.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

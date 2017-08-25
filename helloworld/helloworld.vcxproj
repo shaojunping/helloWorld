@@ -125,10 +125,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="firstWindowUseShaderClassTex.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
+    <ClCompile Include="useShaderClassMixTex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h" />
