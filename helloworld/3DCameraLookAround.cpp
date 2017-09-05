@@ -16,6 +16,10 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 int main()
 {
 	// glfw: initialize and configure
@@ -193,10 +197,6 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//int width, height, nrChannels;
-	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	//unsigned char *data = stbi_load(FileSystem::getPath("container.jpg").c_str(), &width, &height, &nrChannels, 0);
-	//D:\\code\\openGL\\helloworld\helloworld
 	data = stbi_load("D:\\code\\openGL\\helloworld\\helloworld\\smile1.png", &width, &height, &nrChannels, 0);
 	if (data)
 	{
@@ -213,7 +213,8 @@ int main()
 	// or set it via the texture class
 	ourShader.setInt("texture2", 1);
 
-
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	ourShader.setMat4("projection", projection);
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
@@ -233,48 +234,30 @@ int main()
 
 		ourShader.use();
 		
-		// create transformations
-		glm::mat4 model;
+		// camera/view transformation
 		glm::mat4 view;
-		glm::mat4 projection;
-		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		view = glm::translate(view, glm::vec3(0.0f, 1.0f, -3.0f));
-		//projection = glm::perspective(glm::radians(65.0f), 2 * (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		// retrieve the matrix uniform locations
-		unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-		unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
-		// pass them to the shaders (3 different ways)
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-		ourShader.setMat4("projection", projection);
+		//float radius = 10.0f;
+		//float camX = sin(glfwGetTime()) * radius;
+		//float camZ = cos(glfwGetTime()) * radius;
+		////first parameter:camera position, second:target position, third: up vector
+		//view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-		//ourShader.setVec3("offset", 0.5, 0, 0);
+		
+
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		ourShader.setMat4("view", view);
+
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		for (unsigned int i = 0; i < 10; i++)
 		{
-			if (i % 3 == 0)
-			{
-				glm::mat4 model1;
-				model1 = glm::translate(model1, cubePositions[i]);
-				model1 = glm::rotate(model1, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-				ourShader.setMat4("model", model1);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-			else
-			{ 
-				glm::mat4 model1;
-				model1 = glm::translate(model1, cubePositions[i]);
-				//float angle = 20.0f * i;
-				//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-				ourShader.setMat4("model", model1);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
+			glm::mat4 model1;
+			model1 = glm::translate(model1, cubePositions[i]);
+			float angle = 20.0f * i;
+			model1 = glm::rotate(model1, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			ourShader.setMat4("model", model1);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-								//glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		// glBindVertexArray(0); // no need to unbind it every time 
 
@@ -300,6 +283,16 @@ void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	float cameraSpeed = 0.05f;
+	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cameraPos += cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cameraPos -= cameraSpeed * cameraFront;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

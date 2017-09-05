@@ -193,10 +193,6 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//int width, height, nrChannels;
-	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	//unsigned char *data = stbi_load(FileSystem::getPath("container.jpg").c_str(), &width, &height, &nrChannels, 0);
-	//D:\\code\\openGL\\helloworld\helloworld
 	data = stbi_load("D:\\code\\openGL\\helloworld\\helloworld\\smile1.png", &width, &height, &nrChannels, 0);
 	if (data)
 	{
@@ -242,8 +238,6 @@ int main()
 		view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		ourShader.setMat4("view", view);
 
-		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-		//ourShader.setVec3("offset", 0.5, 0, 0);
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		for (unsigned int i = 0; i < 10; i++)
 		{
@@ -254,7 +248,7 @@ int main()
 			ourShader.setMat4("model", model1);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-								//glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		// glBindVertexArray(0); // no need to unbind it every time 
 
