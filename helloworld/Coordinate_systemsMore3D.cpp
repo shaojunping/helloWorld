@@ -49,7 +49,7 @@ int main()
 		return -1;
 	}
 
-
+	glEnable(GL_DEPTH_TEST);
 	// build and compile our shader program
 	Shader ourShader("shader//6.1.coordinate_systems.vs", 
 		"shader//6.1.coordinate_systems.fs");
@@ -98,6 +98,19 @@ int main()
 		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
+
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
 	unsigned int VBO, VAO;
@@ -195,28 +208,11 @@ int main()
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	//glBindVertexArray(0);
-
-
-	// uncomment this call to draw in wireframe polygons.
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	ourShader.use();
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
 	// or set it via the texture class
 	ourShader.setInt("texture2", 1);
 
-	/*glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans;
-	trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-	vec = trans * vec;
-	std::cout << vec.x << ", " << vec.y << ", " << vec.z << std::endl;*/
-
-	
 
 	// render loop
 	// -----------
@@ -226,7 +222,6 @@ int main()
 		// -----
 		processInput(window);
 
-		glEnable(GL_DEPTH_TEST);
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -242,14 +237,14 @@ int main()
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		// retrieve the matrix uniform locations
 		unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
 		unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
 		// pass them to the shaders (3 different ways)
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 		ourShader.setMat4("projection", projection);
@@ -257,8 +252,17 @@ int main()
 		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 		//ourShader.setVec3("offset", 0.5, 0, 0);
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			glm::mat4 modell;
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			ourShader.setMat4("model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+								//glDrawArrays(GL_TRIANGLES, 0, 3);
+		
 		// glBindVertexArray(0); // no need to unbind it every time 
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
