@@ -74,7 +74,7 @@
     <IncludePath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>F:\chromeDownload\glm-0.9.8.5\glm;F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\lib-vc2015;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -126,9 +126,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="mathTransformScaleRotateTwoObj.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
-    <ClCompile Include="useShaderClassMixTex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h" />
