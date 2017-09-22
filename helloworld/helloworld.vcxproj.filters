@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\light\colors.cpp">
+    <ClCompile Include="..\light\BasicLighting.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
