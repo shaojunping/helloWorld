@@ -69,7 +69,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	// build and compile our shader program
 	Shader ourShader("..//light//shader//1.diffuse.vs",
-		"..//light//shader//1.diffuse.fs");
+		"..//light//shader//1.basicLighting.fs");
 	Shader lampShader("..//light//shader//1.colors.vs", "..//light//shader//1.lamp.fs");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
@@ -147,9 +147,11 @@ int main()
 	//当调用这个参数的时候，每个顶点属性从VBO管理的内存中取数据，而从哪个VBO？当前绑定到GL_ARRAY_BuFFER的vbo上
 	//将buffer绑定到属性上
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
 	//我们用这句代码将顶点属性 location 作为他的参数，默认顶点属性是disable的
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 
 	unsigned int lampVAO;
 	glGenVertexArrays(1, &lampVAO);
@@ -179,6 +181,7 @@ int main()
 		ourShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		ourShader.setVec3("lightPos", lightPos);
+		ourShader.setVec3("viewPos", camera.Position);
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetCameraMatrix();
