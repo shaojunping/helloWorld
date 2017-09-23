@@ -36,7 +36,7 @@ public:
 	float Zoom;
 	glm::vec3 Position;
 
-	Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)):
+	Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)):
 		Front(glm::vec3(0.0f, 0.0f, -1.0f)), Yaw(YAW),
 		Pitch(PITCH), Zoom(ZOOM), Sensitivity(SENSITIVITY), CameraSpeed(CAMERASPEED)
 	{

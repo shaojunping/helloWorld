@@ -68,9 +68,9 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 	// build and compile our shader program
-	Shader ourShader("..//light//shader//1.diffuse.vs",
-		"..//light//shader//1.basicLighting.fs");
-	Shader lampShader("..//light//shader//1.colors.vs", "..//light//shader//1.lamp.fs");
+	Shader ourShader("..//light//shader//2.1.basic_lighting.vs",
+		"..//light//shader//2.1.basic_lighting.fs");
+	Shader lampShader("..//light//shader//2.1.lamp.vs", "..//light//shader//2.1.lamp.fs");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -149,7 +149,7 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	//我们用这句代码将顶点属性 location 作为他的参数，默认顶点属性是disable的
 	glEnableVertexAttribArray(1);
 
@@ -162,7 +162,7 @@ int main()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
@@ -176,12 +176,11 @@ int main()
 		// ------
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		ourShader.use();
 		ourShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		ourShader.setVec3("lightPos", lightPos);
-		ourShader.setVec3("viewPos", camera.Position);
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetCameraMatrix();
@@ -190,6 +189,7 @@ int main()
 		ourShader.setMat4("view", view);
 
 		glm::mat4 model;
+		
 		ourShader.setMat4("model", model);
 
 
@@ -210,7 +210,7 @@ int main()
 
 		glBindVertexArray(lampVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
