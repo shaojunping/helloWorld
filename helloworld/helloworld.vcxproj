@@ -70,12 +70,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\lib-vc2015;$(LibraryPath)</LibraryPath>
-    <IncludePath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\glfw-glad\lib-vc2015;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\glfw-glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>F:\chromeDownload\glm-0.9.8.5\glm;F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\chromeDownload\glfw-3.2.1.bin.WIN64\glfw-3.2.1.bin.WIN64\lib-vc2015;$(LibraryPath)</LibraryPath>
+
+    <IncludePath>..\glfw-glad\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\glfw-glad\lib-vc2015;$(LibraryPath)</LibraryPath>
+
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
