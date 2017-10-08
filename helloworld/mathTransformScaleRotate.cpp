@@ -3,6 +3,10 @@
 #include <GLFW/glfw3.h>
 #include "shader.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -47,17 +51,17 @@ int main()
 
 
 	// build and compile our shader program
-	Shader ourShader("shader//4.2.texture.vs", 
-		"shader//4.2.texture.fs");
+	Shader ourShader("shader//5.1.transform.vs", 
+		"shader//5.1.transform.fs");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+		0.5f,  0.5f, 0.0f,   /*1.0f, 0.0f, 0.0f, */  1.0f, 1.0f, // top right
+		0.5f, -0.5f, 0.0f,   /*0.0f, 1.0f, 0.0f, */ 1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,  /* 0.0f, 0.0f, 1.0f, */ 0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,   /*1.0f, 1.0f, 0.0f, */ 0.0f, 1.0f  // top left 
 	};
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -96,15 +100,15 @@ int main()
 	//第六个参数指定了buffer中位置数据起始的offset，由于位置数据是从开头开始的，所以设置为0
 	//当调用这个参数的时候，每个顶点属性从VBO管理的内存中取数据，而从哪个VBO？当前绑定到GL_ARRAY_BuFFER的vbo上
 	//将buffer绑定到属性上
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
 	//我们用这句代码将顶点属性 location 作为他的参数，默认顶点属性是disable的
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	/*glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);*/
 	stbi_set_flip_vertically_on_load(true);
 
 	unsigned int texture, texture1;
@@ -177,6 +181,15 @@ int main()
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
 	// or set it via the texture class
 	ourShader.setInt("texture2", 1);
+
+	/*glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::mat4 trans;
+	trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+	vec = trans * vec;
+	std::cout << vec.x << ", " << vec.y << ", " << vec.z << std::endl;*/
+
+	
+
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
@@ -193,8 +206,26 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture1);
+
+		
+
+		// create transformations
+		glm::mat4 transform;
+		//transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		//for test if we first rotate, second translate
+		transform = glm::rotate(transform, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+
+		glm::mat4 trans;
+		trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 		// draw our first triangle
 		ourShader.use();
+		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 		//ourShader.setVec3("offset", 0.5, 0, 0);
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
