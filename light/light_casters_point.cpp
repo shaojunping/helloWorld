@@ -26,11 +26,11 @@ bool firstMouse = true;
 float lastX = SCR_WIDTH / 2.0;
 float lastY = SCR_HEIGHT / 2.0;
 
-//timing
+//time
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
-// lighting
+						// lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
@@ -46,7 +46,7 @@ int main()
 
 														 // glfw window creation
 														 // --------------------
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light-casters-directional", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light-casters-point", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -209,7 +209,7 @@ int main()
 
 		ourShader.use();
 
-		ourShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+		ourShader.setVec3("light.position", lightPos);
 		ourShader.setVec3("viewPos", camera.Position);
 
 		//light properties
@@ -224,6 +224,10 @@ int main()
 		ourShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
 		ourShader.setVec3("light.specular", glm::vec3(1.0f));
 
+		ourShader.setFloat("light.constant", 1.0f);
+		ourShader.setFloat("light.linear", 0.09f);
+		ourShader.setFloat("light.quadratic", 0.032f);
+
 		//material properties
 		/*ourShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
 		ourShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
@@ -237,7 +241,6 @@ int main()
 		ourShader.setMat4("view", view);
 
 		glm::mat4 model;
-		
 		ourShader.setMat4("model", model);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -259,20 +262,20 @@ int main()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		//lampShader.use();
+		lampShader.use();
 
-		//// pass projection matrix to shader (note that in this case it could change every frame)
-		//lampShader.setMat4("projection", projection);
+		// pass projection matrix to shader (note that in this case it could change every frame)
+		lampShader.setMat4("projection", projection);
 
-		//lampShader.setMat4("view", view);
+		lampShader.setMat4("view", view);
 
-		//model = glm::mat4();
-		//model = glm::translate(model, lightPos);
-		//model = glm::scale(model, glm::vec3(0.2f));
-		//lampShader.setMat4("model", model);
+		model = glm::mat4();
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+		lampShader.setMat4("model", model);
 
-		//glBindVertexArray(lampVAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(lampVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
