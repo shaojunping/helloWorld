@@ -20,7 +20,6 @@ class Camera
 {
 private:
 	//camera attributes
-	glm::vec3 Front;
 	glm::vec3 Right;
 	glm::vec3 Up;
 	glm::vec3 WorldUp;
@@ -33,6 +32,7 @@ private:
 	
 
 public:
+	glm::vec3 Front;
 	float Zoom;
 	glm::vec3 Position;
 
