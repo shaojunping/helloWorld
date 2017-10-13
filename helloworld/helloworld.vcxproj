@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\light\light_casters_spot_soft.cpp" />
+    <ClCompile Include="..\advanced_opengl\depth_testing.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />

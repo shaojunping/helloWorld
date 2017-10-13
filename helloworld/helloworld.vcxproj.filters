@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\light\light_casters_spot_soft.cpp">
+    <ClCompile Include="..\advanced_opengl\depth_testing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
