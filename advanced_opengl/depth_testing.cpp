@@ -66,7 +66,8 @@ int main()
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
+	//glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
+	glDepthFunc(GL_LESS);
 
 	// build and compile our shader program
 	Shader shader("..//advanced_opengl//shaders//1.1.depth_testing.vs",
@@ -178,8 +179,8 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glBindVertexArray(0);
 
-	unsigned int cubeTexture = loadTexture("..//light//container2.png");
-	unsigned int floorTexture = loadTexture("..//light//container2_specular.png");
+	unsigned int cubeTexture = loadTexture("..//advanced_opengl//marble.jpg");
+	unsigned int floorTexture = loadTexture("..//advanced_opengl//metal.png");
 
 	shader.use();
 	shader.setInt("texture1", 0);
@@ -219,7 +220,7 @@ int main()
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		shader.setInt("texture1", 1);
+		//shader.setInt("texture1", 1);
 		// floor
 		glBindVertexArray(planeVAO);
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
