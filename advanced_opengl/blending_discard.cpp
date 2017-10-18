@@ -42,7 +42,7 @@ int main()
 
 														 // glfw window creation
 														 // --------------------
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Stencil Test", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Blending Discard", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -67,17 +67,15 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
-	glDepthFunc(GL_LESS);
-
-	glEnable(GL_STENCIL_TEST);
+	//glDepthFunc(GL_LESS);
 
 	//第一个参数指定深度测试函数，applied to the stored stencil value and the glStencilFunc's ref value. Possible options are GL_NEVER,GL_LESS
 	//second:specifies the reference value for the stencil test. the stencil buffer's content is compared to this value
 	//third:specifies a mask that is ANDed with both the reference value and the stored stencil value before the test compares them.
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	//first: action to take if the stencil test fails
-	//second: action to take if the stencil test passes, but the depth test fail
-	//third: action to take if both the stencil and the depth test pass
+	//first:action to take if the stencil test fails
+	//second:action to take if the stencil test passes, but the depth test fails
+	//third:action to take if both the stencil and the depth test pass
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	// build and compile our shader program
@@ -226,7 +224,7 @@ int main()
 		shader.setMat4("view", view);
 
 		// draw floor as normal, but don't write the floor to the stencil buffer, we only care about the containers. We set its mask to 0x00 to not write to the stencil buffer.
-		glStencilMask(0x00);
+		glStencilMask(0x00); //each bit ends up as 0 in the stencil buffer(disabling writes)
 		// floor
 		glBindVertexArray(planeVAO);
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
@@ -236,9 +234,8 @@ int main()
 
 		// 1st. render pass, draw objects as normal, writing to the stencil buffer
 		// --------------------------------------------------------------------
-		glStencilFunc(GL_ALWAYS, 1, 0xFF); 
-		//The function glStencilMask allows us to set a bitmask that is ANDed with the stencil value about to be written to the buffer.
-		glStencilMask(0xFF); //each bit is written to the stencil buffer as it is
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);  //each bit is written to the stencil buffer as it is
 		// cubes
 		glBindVertexArray(cubeVAO);
 		glActiveTexture(GL_TEXTURE0);
@@ -257,11 +254,7 @@ int main()
 		// the objects' size differences, making it look like borders.
 		// -----------------------------------------------------------------------------------------------------------------------------
 		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		//first: sets the stencil test func, like GL_NEVER, GL_LESS, GL_LEQUAL
-		//ref: specifies the reference value for the stencil test
-		// third:specifies a mask that is ANDed with both the reference value and the stored stencil value before the test compares them.
-		//The function glStencilMask allows us to set a bitmask that is ANDed with the stencil value about to be written to the buffer.
-		glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer
+		glStencilMask(0x00); //each bit ends up as 0 in the stencil buffer(disabling writes)
 		glDisable(GL_DEPTH_TEST);
 		shaderSingleColor.use();
 		float scale = 1.1;
