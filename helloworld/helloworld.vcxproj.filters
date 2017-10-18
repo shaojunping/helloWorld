@@ -24,21 +24,15 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\model_loading\model_loading.cpp">
+    <ClCompile Include="..\advanced_opengl\stencil_testing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MyCamera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="model.h">

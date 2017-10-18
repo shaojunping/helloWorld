@@ -125,16 +125,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\model_loading\model_loading.cpp" />
+    <ClCompile Include="..\advanced_opengl\stencil_testing.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="MyCamera.h" />
-    <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
