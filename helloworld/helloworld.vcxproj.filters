@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_opengl\stencil_testing.cpp">
+    <ClCompile Include="..\advanced_opengl\blending_discard.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
