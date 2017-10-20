@@ -79,8 +79,16 @@ int main()
 	//	"..//advanced_opengl//shaders//5.1.framebuffers_screen_grayscale.fs");
 
 	//sharpen
+	/*Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs",
+		"..//advanced_opengl//shaders//5.1.framebuffers_screen_kernel.fs");*/
+
+	//blur
+	/*Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs",
+		"..//advanced_opengl//shaders//5.1.framebuffers_screen_blur.fs");*/
+
+	//edge detection
 	Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs",
-		"..//advanced_opengl//shaders//5.1.framebuffers_screen_kernel.fs");
+		"..//advanced_opengl//shaders//5.1.framebuffers_screen_edgeDetection.fs");
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float cubeVertices[] = {
