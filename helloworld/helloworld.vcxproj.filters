@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_opengl\faceculling_vertex.cpp">
+    <ClCompile Include="..\advanced_opengl\framebuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
