@@ -72,7 +72,8 @@ int main()
 	Shader shader("..//advanced_opengl//shaders//1.1.depth_testing.vs",
 		"..//advanced_opengl//shaders//1.1.depth_testing.fs");
 
-	Shader screenShader("5.1.framebuffers_screen.vs", "5.1.framebuffers_screen.fs");
+	Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs", 
+		"..//advanced_opengl//shaders//5.1.framebuffers_screen.fs");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -263,7 +264,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-
+		glm::mat4 model;
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetCameraMatrix();
 
@@ -274,7 +275,7 @@ int main()
 		glBindVertexArray(cubeVAO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-		glm::mat4 model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
 		shader.setMat4("model", model);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
