@@ -78,6 +78,10 @@ int main()
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
+	/* Also make sure to add a call to OpenGL to specify that triangles defined by a clockwise ordering
+	are now 'front-facing' triangles so the cube is rendered as normal:
+	glFrontFace(GL_CW);
+	*/
 	float cubeVertices[] = {
 		// Back face
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
