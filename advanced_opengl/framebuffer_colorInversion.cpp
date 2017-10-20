@@ -75,8 +75,12 @@ int main()
 	//Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs", 
 	//	"..//advanced_opengl//shaders//5.1.framebuffers_screen_inversion.fs");
 
+	//Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs",
+	//	"..//advanced_opengl//shaders//5.1.framebuffers_screen_grayscale.fs");
+
+	//sharpen
 	Shader screenShader("..//advanced_opengl//shaders//5.1.framebuffers_screen.vs",
-		"..//advanced_opengl//shaders//5.1.framebuffers_screen_grayscale.fs");
+		"..//advanced_opengl//shaders//5.1.framebuffers_screen_kernel.fs");
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float cubeVertices[] = {
