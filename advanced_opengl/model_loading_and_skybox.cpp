@@ -74,10 +74,9 @@ int main()
 	glDepthFunc(GL_LESS);
 
 	// build and compile our shader program
-	Shader shader("..//model_loading//shaders//1.model_loading.vs",
-		"..//model_loading//shaders//1.model_loading.fs");
-
-	Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
+	//Shader shader("..//advanced_opengl//shaders//6.2.cubemaps.vs", "..//advanced_opengl//shaders//6.2.cubemaps_refraction.fs");
+	Shader shader("..//advanced_opengl//shaders//6.2.cubemaps.vs", "..//advanced_opengl//shaders//6.2.cubemaps.fs");
+	Model ourModel("..//model_loading//nanosuit_reflection//nanosuit.obj");
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
