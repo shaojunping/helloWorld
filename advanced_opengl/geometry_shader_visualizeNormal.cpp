@@ -68,10 +68,12 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	
 	// build and compile our shader program
-	Shader shader("..//advanced_opengl//shaders//9.2.geometry_shader.vs",
-		"..//advanced_opengl//shaders//9.2.geometry_shader.fs",
-		"..//advanced_opengl//shaders//9.2.geometry_shader.gs"
+	Shader shader("..//advanced_opengl//shaders//1.1.depth_testing.vs",
+		"..//advanced_opengl//shaders//1.1.depth_testing.fs"
 	);
+	Shader normalShader("..//advanced_opengl//shaders//9.3.geometry_shader_visualizeNormal.vs", 
+		"..//advanced_opengl//shaders//9.3.geometry_shader_visualizeNormal.fs", 
+		"..//advanced_opengl//shaders//9.3.geometry_shader_visualizeNormal.gs");
 
 	// load models
 	// -----------
@@ -107,6 +109,14 @@ int main()
 		// draw model
 		nanosuit.Draw(shader);
 		
+		// then draw model with normal visualizing geometry shader
+		normalShader.use();
+		normalShader.setMat4("projection", projection);
+		normalShader.setMat4("view", view);
+		normalShader.setMat4("model", model);
+
+		nanosuit.Draw(normalShader);
+
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
