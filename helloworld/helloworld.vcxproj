@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\advanced_opengl\advanced_glsl_ubo.cpp" />
+    <ClCompile Include="..\advanced_opengl\geometry_shader_house.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="model.h" />
     <ClInclude Include="MyCamera.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
