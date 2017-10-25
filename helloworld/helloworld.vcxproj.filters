@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_opengl\model_loading_and_skybox.cpp">
+    <ClCompile Include="..\advanced_opengl\advanced_glsl_ubo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
