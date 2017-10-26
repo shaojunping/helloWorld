@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_opengl\geometry_shader_visualizeNormal.cpp">
+    <ClCompile Include="..\advanced_opengl\instancing_quads.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
