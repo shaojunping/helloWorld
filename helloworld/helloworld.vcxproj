@@ -125,12 +125,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\advanced_opengl\geometry_shader_house.cpp" />
+    <ClCompile Include="..\advanced_opengl\advanced_glsl_ubo.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="MyCamera.h" />
     <ClInclude Include="shader.h" />

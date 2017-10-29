@@ -135,7 +135,7 @@ int main()
 	//第三个参数是要拷贝的实际数据
 	//第四个参数告诉我们怎么显卡去处理这些数据。这些数据很少变化GL_STATIC_DRAW、可能变化许多GL_DYNAMIC_DRAW或每次渲染都会变化，
 	//GL_STREAM_DRAW来决定是否放到显存
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
 	//到此为止，已将将顶点数据存到显存中，通过顶点缓冲对象VBO来管理
 
 	//第一个参数指定我们要配置顶点的哪个属性 这里设置location。因为我们在顶点着色器配置 了
@@ -179,12 +179,6 @@ int main()
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	// set the view and projection matrix in the uniform block - we only have to do this once per loop iteration.
-	glm::mat4 view = camera.GetCameraMatrix();
-	glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
@@ -199,7 +193,11 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
+		// set the view and projection matrix in the uniform block - we only have to do this once per loop iteration.
+		glm::mat4 view = camera.GetCameraMatrix();
+		glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 		// draw 4 cubes 
 		// RED
@@ -211,24 +209,24 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
-		//// GREEN
-		//shaderGreen.use();
-		//model = glm::mat4();
-		//model = glm::translate(model, glm::vec3(0.75f, 0.75f, 0.0f)); // move top-right
-		//shaderGreen.setMat4("model", model);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		//// YELLOW
-		//shaderYellow.use();
-		//model = glm::mat4();
-		//model = glm::translate(model, glm::vec3(-0.75f, -0.75f, 0.0f)); // move bottom-left
-		//shaderYellow.setMat4("model", model);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		//// BLUE
-		//shaderBlue.use();
-		//model = glm::mat4();
-		//model = glm::translate(model, glm::vec3(0.75f, -0.75f, 0.0f)); // move bottom-right
-		//shaderBlue.setMat4("model", model);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		// GREEN
+		shaderGreen.use();
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(0.75f, 0.75f, 0.0f)); // move top-right
+		shaderGreen.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		// YELLOW
+		shaderYellow.use();
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(-0.75f, -0.75f, 0.0f)); // move bottom-left
+		shaderYellow.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		// BLUE
+		shaderBlue.use();
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(0.75f, -0.75f, 0.0f)); // move bottom-right
+		shaderBlue.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
