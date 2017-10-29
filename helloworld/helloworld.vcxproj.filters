@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_opengl\instancing_asteroids_optimized.cpp">
+    <ClCompile Include="..\advanced_opengl\anti_aliasing_multisampling.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -42,6 +42,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glfw-glad\include\glad\glad.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
