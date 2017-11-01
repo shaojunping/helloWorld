@@ -46,7 +46,7 @@ int main()
 
 														 // glfw window creation
 														 // --------------------
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Shadow mapping depth", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Shadow mapping base", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -73,6 +73,8 @@ int main()
 	//glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
 
 	// build and compile our shader program
+	Shader shader("..//advanced_light//shaders//3.1.2.shadow_mapping.vs",
+		"..//advanced_light//shaders//3.1.2.shadow_mapping.fs");
 	Shader simpleDepthShader("..//advanced_light//shaders//3.1.shadow_mapping_depth.vs",
 		"..//advanced_light//shaders//3.1.shadow_mapping_depth.fs");
 	Shader debugDepthQuad("..//advanced_light//shaders//3.1.debug_quad.vs",
@@ -133,6 +135,9 @@ int main()
 
 	// shader configuration
 	// --------------------
+	shader.use();
+	shader.setInt("diffuseTexture", 0);
+	shader.setInt("shadowMap", 1);
 	debugDepthQuad.use();
 	debugDepthQuad.setInt("depthMap", 0);
 
@@ -174,9 +179,23 @@ int main()
 		renderScene(simpleDepthShader);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// reset viewport
+		// 2. render scene as normal using the generated depth/shadow map
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		shader.use();
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 view = camera.GetCameraMatrix();
+		shader.setMat4("projection", projection);
+		shader.setMat4("view", view);
+		// set light uniforms
+		shader.setVec3("viewPos", camera.Position);
+		shader.setVec3("lightPos", lightPos);
+		shader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, woodTexture);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		renderScene(shader);
 
 		// render Depth map to quad for visual debugging
 		// ---------------------------------------------
@@ -185,7 +204,7 @@ int main()
 		debugDepthQuad.setFloat("far_plane", far_plane);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		renderQuad();
+		//renderQuad();
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------

@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_light\shadow_mapping_depth.cpp">
+    <ClCompile Include="..\advanced_light\shadow_mapping_base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
