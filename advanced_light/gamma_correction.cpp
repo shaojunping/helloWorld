@@ -195,13 +195,13 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessInput(CameraDirection::RIGHT, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && !gammaKeyPressed)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !gammaKeyPressed)
 	{
 		gammaEnabled = !gammaEnabled;
 		gammaKeyPressed = true;
 		std::cout << "Pressed space " << (gammaEnabled ? "Gamma enabled" : "Gamma disabled") << std::endl;
 	}
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_RELEASE)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
 		gammaKeyPressed = false;
 	}
