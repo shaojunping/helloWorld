@@ -76,8 +76,11 @@ int main()
 	//glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
 
 	// build and compile our shader program
+	/*Shader shader("..//advanced_light//shaders//3.2.1.point_shadows.vs",
+		"..//advanced_light//shaders//3.2.1.point_shadows.fs");*/
+	//soft shadow
 	Shader shader("..//advanced_light//shaders//3.2.1.point_shadows.vs",
-		"..//advanced_light//shaders//3.2.1.point_shadows.fs");
+		"..//advanced_light//shaders//3.2.2.point_shadows.fs");
 	Shader simpleDepthShader("..//advanced_light//shaders//3.2.1.point_shadows_depth.vs",
 		"..//advanced_light//shaders//3.2.1.point_shadows_depth.fs",
 		"..//advanced_light//shaders//3.2.1.point_shadows_depth.gs");
