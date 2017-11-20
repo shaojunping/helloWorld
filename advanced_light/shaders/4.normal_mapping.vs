@@ -29,6 +29,7 @@ void main()
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 	vec3 T = normalize(normalMatrix * aTangent);
 	vec3 N = normalize(normalMatrix * aNormal);
+	// re-orthogonalize T with respect to N
 	T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T);
     
