@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\advanced_light\bloom.cpp">
+    <ClCompile Include="..\advanced_light\ssao.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
