@@ -77,9 +77,11 @@ int main()
 	Shader shader("..//model_loading//shaders//1.model_loading.vs",
 		"..//model_loading//shaders//1.model_loading.fs");
 
-	Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
+	//Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
+	Model ourModel("..//model_loading//grass//ms224_5.fbx");
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -109,6 +111,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 
 		shader.setMat4("model", model);
+		shader.setFloat("t", glfwGetTime());
 		ourModel.Draw(shader);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
