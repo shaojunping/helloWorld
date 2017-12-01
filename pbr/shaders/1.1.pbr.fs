@@ -84,7 +84,7 @@ void main()
 		float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
 		vec3 specular = nominator / max(denominator, 0.001); // prevent divide by zero for NdotV=0.0 or NdotL=0.0
 
-		// kS is equal to Fresnel
+		// kS is equal to Fresnel, represents the energy of light that gets reflected
 		vec3 kS = F;
 		// for energy conservation, the diffuse and specular light can't
         // be above 1.0 (unless the surface emits light); to preserve this
