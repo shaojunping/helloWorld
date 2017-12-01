@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\pbr\ibl_irradiance_conversion.cpp">
+    <ClCompile Include="..\pbr\ibl_irradiance.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
