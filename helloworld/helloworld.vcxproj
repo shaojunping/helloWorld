@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies);freetype271MT.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies);freetype271.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\practice\text_rendering.cpp" />
+    <ClCompile Include="..\advanced_opengl\anti_aliasing_offscreen_hdr.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />

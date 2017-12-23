@@ -24,7 +24,7 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\practice\text_rendering.cpp">
+    <ClCompile Include="..\advanced_opengl\anti_aliasing_offscreen_hdr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
