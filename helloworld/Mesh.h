@@ -130,6 +130,14 @@ private:
 
 		glBindVertexArray(0);
 	}
+	unsigned int getVbo()
+	{
+		return VBO;
+	}
+	unsigned int getEbo()
+	{
+		return EBO;
+	}
 };
 
 #endif
