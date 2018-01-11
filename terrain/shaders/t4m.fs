@@ -4,26 +4,43 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 Normal;
 
-// texture sampler
-uniform sampler2D diffuse1;
-uniform sampler2D diffuse2;
-uniform sampler2D diffuse3;
-uniform sampler2D diffuse4;
-uniform sampler2D normal1;
-uniform sampler2D normal2;
-uniform sampler2D normal3;
-uniform sampler2D normal4;
-uniform sampler2D control;
-uniform sampler2D reflection;
-//uniform sampler2D texture2;
+struct TextureStruct 
+{
+	sampler2D sample;
+	
+	vec4 tex_st;
+};
+
+vec4 CalColor(TextureStruct texture, vec2 texCoords);
+#define NUM_TEXS 4
+
+uniform TextureStruct diffuses[NUM_TEXS];
+uniform TextureStruct normals[NUM_TEXS];
+uniform TextureStruct control;
+uniform TextureStruct reflection;
+
 
 void main()
 {
-	vec4 control = texture(control, TexCoords);
-	vec3 color1 = texture(diffuse1, TexCoords).rgb * control.r;
-	vec3 color2 = texture(diffuse2, TexCoords).rgb * control.g;
-	vec3 color3 = texture(diffuse3, TexCoords).rgb * control.b;
-	vec3 color4 = texture(diffuse4, TexCoords).rgb * control.a;
-	vec3 albedo = color1 + color2 + color3 + color4;
+	vec4 col[NUM_TEXS];
+	for(int i = 0; i < NUM_TEXS; i++)
+	{
+		col[i] = CalColor(diffuses[i], TexCoords);
+	}
+	vec4 controlCol = CalColor(control, TexCoords);
+	vec3 colors[NUM_TEXS];
+	colors[0] = col[0].rgb * controlCol.r;
+	colors[1] = col[1].rgb * controlCol.g;
+	colors[2] = col[2].rgb * controlCol.b;
+	colors[3] = col[3].rgb * controlCol.a;
+	vec3 albedo = colors[0] + colors[1] + colors[2] + colors[3];
 	FragColor = vec4(albedo, 1.0);
+}
+
+vec4 CalColor(TextureStruct texture1, vec2 TexCoords)
+{
+	vec4 tex_st = texture1.tex_st;
+	vec2 ownUv = TexCoords * tex_st.xy + tex_st.zw;
+	vec4 color = texture(texture1.sample, ownUv);
+	return color;
 }

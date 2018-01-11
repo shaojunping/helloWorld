@@ -39,6 +39,7 @@ float lastY = (float)SCR_HEIGHT / 2.0;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
+const unsigned int NUM_TEXS = 4;
 
 int main()
 {
@@ -84,16 +85,17 @@ int main()
 	Shader shader("..//terrain//shaders//t4m.vs",
 		"..//terrain//shaders//t4m.fs");
 	shader.use();
-	shader.setInt("diffuse1", 0);
-	shader.setInt("diffuse2", 1);
-	shader.setInt("diffuse3", 2);
-	shader.setInt("diffuse4", 3);
-	shader.setInt("normal1", 4);
-	shader.setInt("normal2", 5);
-	shader.setInt("normal3", 6);
-	shader.setInt("normal4", 7);
-	shader.setInt("control", 8);
-	shader.setInt("reflection", 9);
+	for (int i = 0; i < NUM_TEXS; i++)
+	{
+		stringstream ss;
+		ss << i;
+		string num = ss.str();
+		shader.setInt("diffuses[" + num + "].sample", i);
+		shader.setInt("normals["+ num + "].sample", i + 4);
+	}
+	
+	shader.setInt("control.sample", 8);
+	shader.setInt("reflection.sample", 9);
 
 	//Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
 	//Model ourModel("..//terrain//mesh//tangentTerrain.FBX");
@@ -153,12 +155,23 @@ int main()
 		shader.setMat4("projection", projection);
 		shader.setMat4("view", view);
 
+		shader.setVec4("diffuses[0].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[1].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[2].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[3].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("normals[0].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("normals[1].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("normals[2].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("normals[3].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+
 		//draw mesh
 		glBindVertexArray(m_vao);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuse2);
-		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, diffuse1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, diffuse2);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, diffuse3);
 		glActiveTexture(GL_TEXTURE3);
