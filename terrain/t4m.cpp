@@ -106,13 +106,18 @@ int main()
 	unsigned int diffuse3 = loadTexture("..//terrain//textures//db0012.tga", Repeat);
 	unsigned int diffuse4 = loadTexture("..//terrain//textures//db0015.tga", Repeat);
 
+	//unsigned int diffuse1 = loadTexture("..//pbr//gold//albedo.png", Repeat);  // ..//model_loading//grass//ms224.tga
+	//unsigned int diffuse2 = loadTexture("..//pbr//gold//ao.png", Repeat);
+	//unsigned int diffuse3 = loadTexture("..//pbr//gold//metallic.png", Repeat);
+	//unsigned int diffuse4 = loadTexture("..//pbr//gold//normal.png", Repeat);
+
 	unsigned int normal1 = loadTexture("..//terrain//textures//db0009_Bump.tga", Repeat);
 	unsigned int normal2 = loadTexture("..//terrain//textures//db0011_Bump.tga", Repeat);
 	unsigned int normal3 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
 	unsigned int normal4 = loadTexture("..//terrain//textures//db0015_Bump.tga", Repeat);
 
-	unsigned int control = loadTexture("..//terrain//textures//controlNew.tga", Clamp);
-	unsigned int reflection = loadTexture("..//terrain//textures//reflection.png", Clamp);
+	unsigned int control = loadTexture("..//terrain//textures//controlNew.tga", Repeat);
+	unsigned int reflection = loadTexture("..//terrain//textures//reflection.png", Repeat);
 
 	unsigned int m_vao = ourMesh.VAO;
 	vector<unsigned int> m_indice = ourMesh.indices;

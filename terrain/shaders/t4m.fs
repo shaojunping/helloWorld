@@ -25,5 +25,5 @@ void main()
 	vec3 color3 = texture(diffuse3, TexCoords).rgb * control.b;
 	vec3 color4 = texture(diffuse4, TexCoords).rgb * control.a;
 	vec3 albedo = color1 + color2 + color3 + color4;
-	FragColor = vec4(color1, 1.0);
+	FragColor = vec4(albedo, 1.0);
 }
