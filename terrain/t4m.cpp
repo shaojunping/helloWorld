@@ -118,7 +118,7 @@ int main()
 	unsigned int normal3 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
 	unsigned int normal4 = loadTexture("..//terrain//textures//db0015_Bump.tga", Repeat);
 
-	unsigned int control = loadTexture("..//terrain//textures//controlNew.tga", Clamp);
+	unsigned int control = loadTexture("..//terrain//textures//controlBig.tga", Repeat);
 	unsigned int reflection = loadTexture("..//terrain//textures//reflection.png", Repeat);
 
 	unsigned int m_vao = ourMesh.VAO;
@@ -155,15 +155,15 @@ int main()
 		shader.setMat4("projection", projection);
 		shader.setMat4("view", view);
 
-		shader.setVec4("diffuses[0].tex_st", glm::vec4(0.01f, 0.01f, 0.0f, 0.0f));
-		shader.setVec4("diffuses[1].tex_st", glm::vec4(0.01f, 0.01f, 0.0f, 0.0f));
-		shader.setVec4("diffuses[2].tex_st", glm::vec4(0.01f, 0.01f, 0.0f, 0.0f));
-		shader.setVec4("diffuses[3].tex_st", glm::vec4(0.01f, 0.01f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[0].tex_st", glm::vec4(0.1f, 0.1f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[1].tex_st", glm::vec4(0.1f, 0.1f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[2].tex_st", glm::vec4(0.1f, 0.1f, 0.0f, 0.0f));
+		shader.setVec4("diffuses[3].tex_st", glm::vec4(0.1f, 0.1f, 0.0f, 0.0f));
 		shader.setVec4("normals[0].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("normals[1].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("normals[2].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("normals[3].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
-		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+		shader.setVec4("control.tex_st", glm::vec4(0.01f, 0.01f, 0.0f, 0.0f));
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 
 		//draw mesh
