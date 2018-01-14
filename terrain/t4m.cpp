@@ -118,7 +118,7 @@ int main()
 	unsigned int normal3 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
 	unsigned int normal4 = loadTexture("..//terrain//textures//db0015_Bump.tga", Repeat);
 
-	unsigned int control = loadTexture("..//terrain//textures//controlNew.tga", Clamp);
+	unsigned int control = loadTexture("..//terrain//textures//control.png", Clamp);
 	unsigned int reflection = loadTexture("..//terrain//textures//reflection.png", Repeat);
 
 	unsigned int m_vao = ourMesh.VAO;
