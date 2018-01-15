@@ -25,11 +25,11 @@ unsigned int loadTexture(char const *path, TextureType type);
 //unsigned int loadCubemap(vector<std::string> faces);
 
 // settings
-const unsigned int SCR_WIDTH = 2000;
-const unsigned int SCR_HEIGHT = 2000;
+const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_HEIGHT = 1000;
 
 //camera
-Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, -5.0f));
 
 bool firstMouse = true;
 float lastX = (float)SCR_WIDTH / 2.0;
@@ -98,14 +98,14 @@ int main()
 	shader.setInt("reflection.sample", 9);
 
 	//Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
-	//Model ourModel("..//terrain//mesh//tangentTerrain.FBX");
-	Model ourModel("..//terrain//mesh//axisPlane.FBX");
+	Model ourModel("..//terrain//mesh//t4m.FBX");
+	//Model ourModel("..//terrain//mesh//axisPlane.FBX");
 
 	Mesh ourMesh = ourModel.meshes[0];
 	vector<Vertex> ourVertex = ourMesh.vertices;
-	unsigned int diffuse1 = loadTexture("..//terrain//textures//db0009.tga", Repeat);  // ..//model_loading//grass//ms224.tga
-	unsigned int diffuse2 = loadTexture("..//terrain//textures//db0011.tga", Repeat);
-	unsigned int diffuse3 = loadTexture("..//terrain//textures//db0012.tga", Repeat);
+	unsigned int diffuse3 = loadTexture("..//terrain//textures//db0009.tga", Repeat);  // ..//model_loading//grass//ms224.tga
+	unsigned int diffuse1 = loadTexture("..//terrain//textures//db0011.tga", Repeat);
+	unsigned int diffuse2 = loadTexture("..//terrain//textures//db0012.tga", Repeat);
 	unsigned int diffuse4 = loadTexture("..//terrain//textures//db0015.tga", Repeat);
 
 	//unsigned int diffuse1 = loadTexture("..//pbr//gold//albedo.png", Repeat);  // ..//model_loading//grass//ms224.tga
@@ -113,9 +113,9 @@ int main()
 	//unsigned int diffuse3 = loadTexture("..//pbr//gold//metallic.png", Repeat);
 	//unsigned int diffuse4 = loadTexture("..//pbr//gold//normal.png", Repeat);
 
-	unsigned int normal1 = loadTexture("..//terrain//textures//db0009_Bump.tga", Repeat);
-	unsigned int normal2 = loadTexture("..//terrain//textures//db0011_Bump.tga", Repeat);
-	unsigned int normal3 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
+	unsigned int normal3 = loadTexture("..//terrain//textures//db0009_Bump.tga", Repeat);
+	unsigned int normal1 = loadTexture("..//terrain//textures//db0011_Bump.tga", Repeat);
+	unsigned int normal2 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
 	unsigned int normal4 = loadTexture("..//terrain//textures//db0015_Bump.tga", Repeat);
 
 	unsigned int control = loadTexture("..//terrain//textures//control.png", Clamp);
@@ -145,6 +145,8 @@ int main()
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetCameraMatrix();
+		view = glm::rotate(view, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
 
 		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
@@ -169,6 +171,12 @@ int main()
 		shader.setVec4("normals[3].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+
+		shader.setVec3("viewPos", camera.Position);
+		shader.setVec3("lightDir", glm::vec3(0.0f, 0.0f, 3.0f));
+		shader.setFloat("ambientScale", 0.2f);
+		shader.setVec3("lightCol", glm::vec3(0.7f, 0.7f, 0.7f));
+		shader.setFloat("shininess", 64.0f);
 
 		//draw mesh
 		glBindVertexArray(m_vao);
@@ -256,6 +264,10 @@ void processInput(GLFWwindow *window)
 		camera.ProcessInput(CameraDirection::LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessInput(CameraDirection::RIGHT, deltaTime);
+	if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
