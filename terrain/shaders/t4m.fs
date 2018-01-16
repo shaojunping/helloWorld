@@ -22,9 +22,10 @@ uniform TextureStruct control;
 uniform TextureStruct reflection;
 uniform vec3 viewPos;
 uniform vec3 lightDir;
-uniform float ambientScale;
 uniform vec3 lightCol;
 uniform float shininess;
+uniform float ambientScale;
+uniform float specularScale;
 
 // ----------------------------------------------------------------------------
 // Easy trick to get tangent-normals to world-space to keep PBR code simplified.
@@ -88,7 +89,7 @@ void main()
 	for(int i = 0; i < NUM_TEXS; i++)
 	{
 		vec3 half = normalize(normalVecs[i] + viewDir);
-		vec3 specular = lightCol * pow(max(0.0, dot(half, normalVecs[i])), shininess) * colors[i].a;
+		vec3 specular = lightCol * pow(max(0.0, dot(half, normalVecs[i])), shininess) * colors[i].a * specularScale;
 		specularSum += specular;
 	}
 	//FragColor = vec4(specularSum, 1.0f);

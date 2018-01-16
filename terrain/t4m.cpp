@@ -1,7 +1,7 @@
-#include "../helloworld/stb_image.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../helloworld/shader.h"
+#include "../helloworld/Texture.h"
 #include "../helloworld/myCamera.h"
 #include "../helloworld/model.h"
 
@@ -12,16 +12,11 @@
 #include <iostream>
 #include <string>
 
-enum TextureType
-{
-	Repeat,
-	Clamp
-};
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-unsigned int loadTexture(char const *path, TextureType type);
 //unsigned int loadCubemap(vector<std::string> faces);
 
 // settings
@@ -103,23 +98,18 @@ int main()
 
 	Mesh ourMesh = ourModel.meshes[0];
 	vector<Vertex> ourVertex = ourMesh.vertices;
-	unsigned int diffuse3 = loadTexture("..//terrain//textures//db0009.tga", Repeat);  // ..//model_loading//grass//ms224.tga
-	unsigned int diffuse1 = loadTexture("..//terrain//textures//db0011.tga", Repeat);
-	unsigned int diffuse2 = loadTexture("..//terrain//textures//db0012.tga", Repeat);
-	unsigned int diffuse4 = loadTexture("..//terrain//textures//db0015.tga", Repeat);
+	Texture2D diffuse1 = Texture2D("..//terrain//textures//db0011.tga", Repeat);
+	Texture2D diffuse2 = Texture2D("..//terrain//textures//db0012.tga", Repeat);
+	Texture2D diffuse3 = Texture2D("..//terrain//textures//db0009.tga", Repeat);
+	Texture2D diffuse4 = Texture2D("..//terrain//textures//db0015.tga", Repeat);
+	
+	Texture2D normal1 = Texture2D("..//terrain//textures//db0011_Bump.tga", Repeat);
+	Texture2D normal2 = Texture2D("..//terrain//textures//db0012_Bump.tga", Repeat);
+	Texture2D normal3 = Texture2D("..//terrain//textures//db0009_Bump.tga", Repeat);
+	Texture2D normal4 = Texture2D("..//terrain//textures//db0015_Bump.tga", Repeat);
 
-	//unsigned int diffuse1 = loadTexture("..//pbr//gold//albedo.png", Repeat);  // ..//model_loading//grass//ms224.tga
-	//unsigned int diffuse2 = loadTexture("..//pbr//gold//ao.png", Repeat);
-	//unsigned int diffuse3 = loadTexture("..//pbr//gold//metallic.png", Repeat);
-	//unsigned int diffuse4 = loadTexture("..//pbr//gold//normal.png", Repeat);
-
-	unsigned int normal3 = loadTexture("..//terrain//textures//db0009_Bump.tga", Repeat);
-	unsigned int normal1 = loadTexture("..//terrain//textures//db0011_Bump.tga", Repeat);
-	unsigned int normal2 = loadTexture("..//terrain//textures//db0012_Bump.tga", Repeat);
-	unsigned int normal4 = loadTexture("..//terrain//textures//db0015_Bump.tga", Repeat);
-
-	unsigned int control = loadTexture("..//terrain//textures//control.png", Clamp);
-	unsigned int reflection = loadTexture("..//terrain//textures//reflection.png", Repeat);
+	Texture2D control = Texture2D("..//terrain//textures//control.png", Clamp);
+	Texture2D reflection = Texture2D("..//terrain//textures//reflection.png", Repeat);
 
 	unsigned int m_vao = ourMesh.VAO;
 	vector<unsigned int> m_indice = ourMesh.indices;
@@ -173,33 +163,34 @@ int main()
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 
 		shader.setVec3("viewPos", camera.Position);
-		shader.setVec3("lightDir", glm::vec3(0.0f, 0.0f, 3.0f));
+		shader.setVec3("lightDir", glm::vec3(1.0f, 1.0f, 0.0f));
 		shader.setFloat("ambientScale", 0.2f);
+		shader.setFloat("specularScale", 1.5f);
 		shader.setVec3("lightCol", glm::vec3(0.7f, 0.7f, 0.7f));
 		shader.setFloat("shininess", 64.0f);
 
 		//draw mesh
 		glBindVertexArray(m_vao);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuse1);
+		glBindTexture(GL_TEXTURE_2D, diffuse1.m_ID);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, diffuse2);
+		glBindTexture(GL_TEXTURE_2D, diffuse2.m_ID);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, diffuse3);
+		glBindTexture(GL_TEXTURE_2D, diffuse3.m_ID);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, diffuse4);
+		glBindTexture(GL_TEXTURE_2D, diffuse4.m_ID);
 		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, normal1);
+		glBindTexture(GL_TEXTURE_2D, normal1.m_ID);
 		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, normal2);
+		glBindTexture(GL_TEXTURE_2D, normal2.m_ID);
 		glActiveTexture(GL_TEXTURE6);
-		glBindTexture(GL_TEXTURE_2D, normal3);
+		glBindTexture(GL_TEXTURE_2D, normal3.m_ID);
 		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, normal4);
+		glBindTexture(GL_TEXTURE_2D, normal4.m_ID);
 		glActiveTexture(GL_TEXTURE8);
-		glBindTexture(GL_TEXTURE_2D, control);
+		glBindTexture(GL_TEXTURE_2D, control.m_ID);
 		glActiveTexture(GL_TEXTURE9);
-		glBindTexture(GL_TEXTURE_2D, reflection);
+		glBindTexture(GL_TEXTURE_2D, reflection.m_ID);
 		glDrawElements(GL_TRIANGLES, m_indice.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
@@ -217,38 +208,6 @@ int main()
 	return 0;
 }
 
-unsigned int loadTexture(char const *path, TextureType type)
-{
-	unsigned int textureId;
-	glGenTextures(1, &textureId);
-	int width, height, nrChannels;
-	unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		GLenum format;
-		if (nrChannels == 1)
-			format = GL_RED;
-		else if (nrChannels == 3)
-			format = GL_RGB;
-		else if (nrChannels == 4)
-			format = GL_RGBA;
-
-		glBindTexture(GL_TEXTURE_2D, textureId);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, type == Clamp ? GL_CLAMP_TO_EDGE : GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, type == Clamp ? GL_CLAMP_TO_EDGE : GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	else
-	{
-		std::cout << "Texture failed to load at path: " << path << std::endl;
-	}
-	stbi_image_free(data);
-	return textureId;
-}
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)

@@ -27,6 +27,9 @@
     <ClCompile Include="..\terrain\t4m.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
