@@ -23,9 +23,11 @@ uniform TextureStruct reflection;
 uniform vec3 viewPos;
 uniform vec3 lightDir;
 uniform vec3 lightCol;
+uniform vec4 wetCol;
 uniform float shininess;
 uniform float ambientScale;
 uniform float specularScale;
+uniform float reflectionFactor;
 
 // ----------------------------------------------------------------------------
 // Easy trick to get tangent-normals to world-space to keep PBR code simplified.
@@ -56,6 +58,7 @@ void main()
 		col[i] = CalColor(diffuses[i], TexCoords);
 	}
 	vec4 controlCol = CalColor(control, TexCoords);
+	vec4 reflection = CalColor(reflection, TexCoords);
 	vec4 colors[NUM_TEXS];
 	colors[0] = col[0] * controlCol.r;
 	colors[1] = col[1] * controlCol.g;
@@ -66,15 +69,18 @@ void main()
 	
 	vec3 albedo = vec3(0.0);
 	vec3 normalVecs[NUM_TEXS];
+	
 	for(int i = 0; i < NUM_TEXS; i++)
 	{
 		vec4 normalFromMap[NUM_TEXS]; 
 		normalFromMap[i] = CalColor(normals[i], TexCoords);
 		normalVecs[i] = getNormalFromMap(normalFromMap[i]);
+		normalVecs[i] = mix(normalVecs[i], vec3(0.0, 0.0, 1.0), reflectionFactor * reflection.r);
 		float nDotL = dot(normalVecs[i], normalize(lightDir)) * 0.5 + 0.5;
 		albedo +=  colors[i].rgb * nDotL;
 	}
 	albedo *= lightCol;
+	albedo = mix(albedo, albedo * wetCol.rgb, reflection.r);
 	//FragColor = vec4(albedo, 1.0);
 	vec3 color = vec3(0.0);
 	for(int i = 0; i < NUM_TEXS; i++)

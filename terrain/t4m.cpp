@@ -168,6 +168,7 @@ int main()
 		shader.setFloat("specularScale", 1.5f);
 		shader.setVec3("lightCol", glm::vec3(0.7f, 0.7f, 0.7f));
 		shader.setFloat("shininess", 64.0f);
+		shader.setFloat("reflectionFactor", 1.0f);
 
 		//draw mesh
 		glBindVertexArray(m_vao);
