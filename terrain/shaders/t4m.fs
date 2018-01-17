@@ -20,6 +20,8 @@ uniform TextureStruct diffuses[NUM_TEXS];
 uniform TextureStruct normals[NUM_TEXS];
 uniform TextureStruct control;
 uniform TextureStruct reflection;
+uniform TextureStruct rain;
+uniform samplerCube skybox;
 uniform vec3 viewPos;
 uniform vec3 lightDir;
 uniform vec3 lightCol;
@@ -28,6 +30,7 @@ uniform float shininess;
 uniform float ambientScale;
 uniform float specularScale;
 uniform float reflectionFactor;
+uniform float rainFactor;
 
 // ----------------------------------------------------------------------------
 // Easy trick to get tangent-normals to world-space to keep PBR code simplified.
@@ -65,41 +68,40 @@ void main()
 	colors[2] = col[2] * controlCol.b;
 	colors[3] = col[3] * controlCol.a;
 	//FragColor = fixed4(colors[0] + colors[1] + colors[2] + colors[3], 1.0);
-	//vec3 ambient = albedo * 
-	
+	vec4 colorSum = colors[0] + colors[1] + colors[2] + colors[3];
+
 	vec3 albedo = vec3(0.0);
 	vec3 normalVecs[NUM_TEXS];
-	
 	for(int i = 0; i < NUM_TEXS; i++)
 	{
-		vec4 normalFromMap[NUM_TEXS]; 
-		normalFromMap[i] = CalColor(normals[i], TexCoords);
-		normalVecs[i] = getNormalFromMap(normalFromMap[i]);
-		normalVecs[i] = mix(normalVecs[i], vec3(0.0, 0.0, 1.0), reflectionFactor * reflection.r);
-		float nDotL = dot(normalVecs[i], normalize(lightDir)) * 0.5 + 0.5;
-		albedo +=  colors[i].rgb * nDotL;
+		vec4 normalFromMap = CalColor(normals[i], TexCoords);
+		normalVecs[i] = getNormalFromMap(normalFromMap);
 	}
+	vec3 normalSum = normalVecs[0] * controlCol.r + normalVecs[1] * controlCol.g + normalVecs[2] * controlCol.b + normalVecs[3] * controlCol.a;
+	normalSum = normalize(mix(normalSum, vec3(0.0, 0.0, 1.0), reflectionFactor * reflection.r));
+	
+	float nDotL = dot(normalSum, normalize(lightDir)) * 0.5 + 0.5;
+	albedo +=  colorSum.rgb * nDotL;
 	albedo *= lightCol;
 	albedo = mix(albedo, albedo * wetCol.rgb, reflection.r);
-	//FragColor = vec4(albedo, 1.0);
-	vec3 color = vec3(0.0);
-	for(int i = 0; i < NUM_TEXS; i++)
-	{
-		color += colors[i].rgb;
-	}
-	vec3 ambient = color * ambientScale;
+	
+	vec3 ambient = colorSum.rgb * ambientScale;
 	vec3 viewDir = normalize(viewPos - FragPos);
 	//FragColor = vec4(ambient + albedo, 1.0);
 	
-	vec3 specularSum = vec3(0.0);
-	for(int i = 0; i < NUM_TEXS; i++)
-	{
-		vec3 half = normalize(normalVecs[i] + viewDir);
-		vec3 specular = lightCol * pow(max(0.0, dot(half, normalVecs[i])), shininess) * colors[i].a * specularScale;
-		specularSum += specular;
-	}
+	vec3 half = normalize(normalSum + viewDir);
+	float aSum = colors[0].a * controlCol.r + colors[1].a * controlCol.g + colors[2].a * controlCol.b + colors[3].a * controlCol.a;
+	vec3 specular = lightCol * pow(max(0.0, dot(half, normalSum)), shininess) * aSum * specularScale;
 	//FragColor = vec4(specularSum, 1.0f);
-	FragColor = vec4(albedo + ambient + specularSum, 1.0);
+
+	vec4 rainMap = CalColor(rain, TexCoords);
+	vec3 rainNormal = getNormalFromMap(rainMap);
+	normalSum = mix(normalSum, normalSum * rainNormal, rainFactor);
+	normalSum = normalize(normalSum);
+	vec3 reflectDir = reflect(viewDir, normalSum);
+	vec3 emission = texture(skybox, reflectDir).rgb * 0.3;
+	//FragColor = vec4(emission * 1.4, 1.0);
+	FragColor = vec4(albedo + ambient + specular + emission, 1.0);
 }
 
 vec4 CalColor(TextureStruct texture1, vec2 TexCoords)

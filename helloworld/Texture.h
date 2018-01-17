@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 enum TextureType
 {
@@ -33,6 +34,7 @@ class Texture2D
 {
 public:
 	  Texture2D(char const *path, TextureType type);
+	  Texture2D();
 	  unsigned int m_ID;
 	  
 
@@ -43,4 +45,13 @@ private:
 
 };
 
+class Cubemap
+{
+public:
+	Cubemap();
+	Cubemap(std::vector<std::string> faces);
+	unsigned int m_ID;
+//private:
+
+};
 #endif

@@ -24,10 +24,10 @@
     <ClCompile Include="stb_img.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\terrain\t4m.cpp">
+    <ClCompile Include="Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="..\terrain\t4m.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
