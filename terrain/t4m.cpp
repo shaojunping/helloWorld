@@ -200,6 +200,7 @@ int main()
 	skyboxShader.setInt("skybox", 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	unsigned int frameCount = 0;
+	unsigned int curFrame = 0;
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window))
@@ -242,7 +243,7 @@ int main()
 		shader.setVec4("normals[3].tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
-		shader.setVec4("rain.tex_st", glm::vec4(10.0f, 10.0f, 0.0f, 0.0f));
+		shader.setVec4("rain.tex_st", glm::vec4(40.0f, 40.0f, 0.0f, 0.0f));
 
 		shader.setVec3("viewPos", camera.Position);
 		shader.setVec3("lightDir", glm::vec3(0.2f, 0.8f, 1.0f));
@@ -273,13 +274,16 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, control.m_ID);
 		glActiveTexture(GL_TEXTURE9);
 		glBindTexture(GL_TEXTURE_2D, reflection.m_ID);
-		if (frameCount < NUM_RAIN_FRAMES)
+		if (curFrame < NUM_RAIN_FRAMES)
 		{
 			frameCount++;
+			if (frameCount % 4 == 0)
+				curFrame++;
 		}
 		else
 		{
 			frameCount = 0;
+			curFrame = 0;
 		}
 		//shader.setInt("rainTex", rainFrames[frameCount].m_ID);
 		glActiveTexture(GL_TEXTURE10);

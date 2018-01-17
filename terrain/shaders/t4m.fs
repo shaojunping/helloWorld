@@ -96,10 +96,10 @@ void main()
 
 	vec4 rainMap = CalColor(rain, TexCoords);
 	vec3 rainNormal = getNormalFromMap(rainMap);
-	normalSum = mix(normalSum, normalSum * rainNormal, rainFactor);
+	normalSum = mix(normalSum, rainNormal, rainFactor);
 	normalSum = normalize(normalSum);
-	vec3 reflectDir = reflect(viewDir, normalSum);
-	vec3 emission = texture(skybox, reflectDir).rgb * 0.3;
+	vec3 reflectDir = reflect(viewDir, rainNormal);
+	vec3 emission = mix(vec3(0,0,0), texture(skybox, reflectDir).rgb, reflection.r);
 	//FragColor = vec4(emission * 1.4, 1.0);
 	FragColor = vec4(albedo + ambient + specular + emission, 1.0);
 }
