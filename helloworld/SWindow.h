@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SWINDOWH
 #define SWINDOWH
 #include "sWidget.h"
@@ -29,4 +30,4 @@ private:
 	bool mIsClosed;
 };
 #endif // !SWINDOWH
-#pragma once
+

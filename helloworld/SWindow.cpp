@@ -1,10 +1,9 @@
 #include "SWindow.h"
-#include "../helloworld/shader.h"
 #include "../helloworld/myCamera.h"
-#include "../helloworld/model.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "grass.h"
 
 #include <iostream>
 
@@ -131,7 +130,6 @@ bool SWindow::IsValid()
 	return mWindow != NULL;
 }
 
-
 void SWindow::Exec()
 {
 	//time
@@ -139,14 +137,16 @@ void SWindow::Exec()
 	float lastFrame = 0.0f; // Time of last frame
 	glEnable(GL_DEPTH_TEST);
 
-	// build and compile our shader program
-	Shader shader("..//model_loading//shaders//1.model_loading.vs",
+	Grass grass("..//model_loading//plane.obj", "..//model_loading//shaders//1.model_loading.vs",
 		"..//model_loading//shaders//1.model_loading.fs");
+	// build and compile our shader program
+	//Shader shader("..//model_loading//shaders//1.model_loading.vs",
+	//	"..//model_loading//shaders//1.model_loading.fs");
 
-	//Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
-	//Model ourModel("..//model_loading//grass//ms224_5.fbx");
-	//Model ourModel("..//terrain//mesh//planeYup.fbx");
-	Model ourModel("..//model_loading//plane.obj");
+	////Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
+	////Model ourModel("..//model_loading//grass//ms224_5.fbx");
+	////Model ourModel("..//terrain//mesh//planeYup.fbx");
+	//Model ourModel("..//model_loading//plane.obj");
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -165,22 +165,24 @@ void SWindow::Exec()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.use();
+		//shader.use();
 
 		glm::mat4 projection = glm::perspective(glm::radians(mCamera->Zoom), (float)mW / (float)mH, 0.1f, 100.0f);
 		glm::mat4 view = mCamera->GetCameraMatrix();
 
-		shader.setMat4("projection", projection);
-		shader.setMat4("view", view);
+		/*shader.setMat4("projection", projection);
+		shader.setMat4("view", view);*/
 
 		//render the loaded model
 		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-
-		shader.setMat4("model", model);
+		grass.SetMats(model, view, projection);
+		grass.SetShaderTime("t", glfwGetTime());
+		grass.Draw();
+		/*shader.setMat4("model", model);
 		shader.setFloat("t", glfwGetTime());
-		ourModel.Draw(shader);
+		ourModel.Draw(shader);*/
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------

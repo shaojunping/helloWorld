@@ -1,8 +1,6 @@
 #include "shader.h"
 
-
-
-	Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const char* geometryPath)
+	Shader::Shader(const GLchar* vertexPath = "", const GLchar* fragmentPath = "", const char* geometryPath)
 	{
 		// 1. retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;

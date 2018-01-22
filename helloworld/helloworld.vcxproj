@@ -126,7 +126,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\model_loading\model_loading.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="grass.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
     <ClCompile Include="sWidget.cpp" />
@@ -134,9 +138,12 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="grass.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="MyCamera.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="sWidget.h" />
