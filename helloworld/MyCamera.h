@@ -1,3 +1,7 @@
+#ifndef CAMERAH
+#define CAMERAH
+
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
@@ -29,14 +33,13 @@ private:
 	//camera operation
 	float CameraSpeed;
 	float Sensitivity;
-	
 
 public:
 	glm::vec3 Front;
 	float Zoom;
 	glm::vec3 Position;
 
-	Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)):
+	Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)) :
 		Front(glm::vec3(0.0f, 0.0f, -1.0f)), Yaw(YAW),
 		Pitch(PITCH), Zoom(ZOOM), Sensitivity(SENSITIVITY), CameraSpeed(CAMERASPEED)
 	{
@@ -62,19 +65,26 @@ public:
 		float velocity = CameraSpeed * deltaTime;
 		switch (direction)
 		{
-			case CameraDirection::FORWARD:
-				Position += velocity * Front;
-				break;
-			case CameraDirection::BACKWARD:
-				Position -= velocity * Front;
-				break;
-			case CameraDirection::LEFT:
-				Position -= velocity * Right;
-				break;
-			case CameraDirection::RIGHT:
-				Position += velocity * Right;
-				break;
+		case CameraDirection::FORWARD:
+			Position += velocity * Front;
+			break;
+		case CameraDirection::BACKWARD:
+			Position -= velocity * Front;
+			break;
+		case CameraDirection::LEFT:
+			Position -= velocity * Right;
+			break;
+		case CameraDirection::RIGHT:
+			Position += velocity * Right;
+			break;
 		}
+	}
+
+	void Move(double x, double y)
+	{
+		x *= -0.01;
+		y *= 0.01;
+		Position += (float)x * Right + (float)y * Up;
 	}
 
 	void ProcessMouseInput(float xoffset, float yoffset, GLboolean constrainPitch = true)
@@ -121,3 +131,4 @@ private:
 		Up = glm::normalize(glm::cross(Right, Front));
 	}
 };
+#endif // !CAMERAH

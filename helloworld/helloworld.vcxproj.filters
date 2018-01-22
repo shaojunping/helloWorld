@@ -27,7 +27,13 @@
     <ClCompile Include="Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\terrain\t4m.cpp">
+    <ClCompile Include="..\model_loading\model_loading.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sWidget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SWindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,6 +54,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sWidget.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SWindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

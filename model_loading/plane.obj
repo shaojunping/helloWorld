@@ -1,0 +1,32 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 22.01.2018 12:45:00
+
+mtllib plane.mtl
+
+#
+# object Plane001
+#
+
+v  -10.0000 0.0000 10.0000
+v  10.0000 0.0000 10.0000
+v  10.0000 17.9590 -10.0000
+v  -10.0000 0.0000 -10.0000
+# 4 vertices
+
+vn -0.3790 0.8442 0.3790
+vn 0.0000 0.7441 0.6681
+vn -0.6681 0.7441 -0.0000
+# 3 vertex normals
+
+vt 0.0000 0.0000 0.0000
+vt 20.0000 0.0000 0.0000
+vt 20.0000 20.0000 0.0000
+vt 0.0000 20.0000 0.0000
+# 4 texture coords
+
+g Plane001
+usemtl wire_088144225
+s 1
+f 1/1/1 2/2/2 3/3/1 4/4/3 
+# 1 polygons
+

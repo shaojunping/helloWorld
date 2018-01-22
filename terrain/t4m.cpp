@@ -97,10 +97,8 @@ int main()
 	shader.setInt("rain.sample", 10);
 	shader.setInt("skybox", 11);
 
-	//Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
-	Model ourModel("..//terrain//mesh//t4mYup.FBX");
-	//Model ourModel("..//terrain//mesh//axisPlane.FBX");
-
+	//Model ourModel("..//terrain//mesh//teapotYup.FBX");
+	Model ourModel("..//terrain//mesh//planeYup.FBX");
 	Mesh ourMesh = ourModel.meshes[0];
 	vector<Vertex> ourVertex = ourMesh.vertices;
 	Texture2D diffuse1 = Texture2D("..//terrain//textures//db0011.tga", Repeat);
@@ -221,11 +219,11 @@ int main()
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetCameraMatrix();
-		view = glm::rotate(view, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//view = glm::rotate(view, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
 
 		glm::mat4 model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
 
 		shader.setMat4("model", model);
@@ -400,121 +398,5 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	camera.ProcessMouseScroll(yoffset);
 }
 
-//
-//#version 330 core
-//out vec4 FragColor;
-//
-//in vec2 TexCoords;
-//in vec3 WorldPos;
-//in vec3 Normal;
-//in vec3 FragPos;
-//
-//struct TextureStruct
-//{
-//	sampler2D sample;
-//
-//	vec4 tex_st;
-//};
-//
-//vec4 CalColor(TextureStruct texture, vec2 texCoords);
-//#define NUM_TEXS 4
-//
-//uniform TextureStruct diffuses[NUM_TEXS];
-//uniform TextureStruct normals[NUM_TEXS];
-//uniform TextureStruct control;
-//uniform TextureStruct reflection;
-//uniform TextureStruct rain;
-//uniform samplerCube skybox;
-//uniform vec3 viewPos;
-//uniform vec3 lightDir;
-//uniform vec3 lightCol;
-//uniform vec4 wetCol;
-//uniform float shininess;
-//uniform float ambientScale;
-//uniform float specularScale;
-//uniform float reflectionFactor;
-//uniform float rainFactor;
-//
-//// ----------------------------------------------------------------------------
-//// Easy trick to get tangent-normals to world-space to keep PBR code simplified.
-//// Don't worry if you don't get what's going on; you generally want to do normal 
-//// mapping the usual way for performance anways; I do plan make a note of this 
-//// technique somewhere later in the normal mapping tutorial.
-//vec3 getNormalFromMap(vec4 normalData)
-//{
-//	vec3 tangentNormal = normalData.xyz * 2.0 - 1.0;
-//
-//	vec3 Q1 = dFdx(WorldPos);
-//	vec3 Q2 = dFdy(WorldPos);
-//	vec2 st1 = dFdx(TexCoords);
-//	vec2 st2 = dFdy(TexCoords);
-//
-//	vec3 N = normalize(Normal);
-//	vec3 T = normalize(Q1*st2.t - Q2*st1.t);
-//	vec3 B = -normalize(cross(N, T));
-//	mat3 TBN = mat3(T, B, N);
-//
-//	return normalize(TBN * tangentNormal);
-//}
-//void main()
-//{
-//	vec4 col[NUM_TEXS];
-//	for (int i = 0; i < NUM_TEXS; i++)
-//	{
-//		col[i] = CalColor(diffuses[i], TexCoords);
-//	}
-//	vec4 controlCol = CalColor(control, TexCoords);
-//	vec4 reflection = CalColor(reflection, TexCoords);
-//	vec3 colors[NUM_TEXS];
-//	colors[0] = col[0].rgb * controlCol.r;
-//	colors[1] = col[1].rgb * controlCol.g;
-//	colors[2] = col[2].rgb * controlCol.b;
-//	colors[3] = col[3].rgb * controlCol.a;
-//
-//	vec3 albedoSum = vec3(0.0);
-//	vec3 normalSum = vec3(0.0);
-//	for (int i = 0; i < NUM_TEXS; i++)
-//	{
-//		vec4 normalFromMap = CalColor(normals[i], TexCoords);
-//		vec3 normalSub = getNormalFromMap(normalFromMap);
-//		normalSub = mix(normalSub, vec3(0.0, 0.0, 1.0), reflectionFactor * reflection.r);
-//		//normalVecs[i] = normalize(normalVecs[i] * rainNormal);
-//		normalSum += normalSub;
-//		albedoSum += colors[i];
-//	}
-//	float nDotL = dot(normalSum, normalize(lightDir)) * 0.5 + 0.5;
-//	vec3 diffuse = albedoSum * nDotL * lightCol;
-//	diffuse = mix(diffuse, diffuse * wetCol.rgb, reflection.r);
-//	//FragColor = vec4(albedo, 1.0);
-//
-//	vec3 ambient = albedoSum * ambientScale;
-//	vec3 viewDir = normalize(viewPos - FragPos);
-//	//FragColor = vec4(ambient + albedo, 1.0);
-//
-//	vec3 specularSum = vec3(0.0);
-//	for (int i = 0; i < NUM_TEXS; i++)
-//	{
-//		vec3 half = normalize(normalSum + viewDir);
-//		vec3 specular = lightCol * pow(max(0.0, dot(half, normalSum)), shininess) * col[i].a * specularScale;
-//		specularSum += specular;
-//	}
-//	//FragColor = vec4(specularSum, 1.0f);
-//
-//	vec4 rainMap = CalColor(rain, TexCoords);
-//	vec3 rainNormal = getNormalFromMap(rainMap);
-//	//vec3 I = normalize(Position - cameraPos);
-//	rainNormal = mix(normalSum, normalSum * rainNormal, rainFactor);
-//	vec3 R = reflect(viewDir, rainNormal);
-//	vec3 emission = texture(skybox, R).rgb;
-//	FragColor = vec4(diffuse + ambient + specularSum + emission, 1.0);
-//}
-//
-//vec4 CalColor(TextureStruct texture1, vec2 TexCoords)
-//{
-//	vec4 tex_st = texture1.tex_st;
-//	vec2 ownUv = TexCoords * tex_st.xy + tex_st.zw;
-//	vec4 color = texture(texture1.sample, ownUv);
-//	return color;
-//}
 
 

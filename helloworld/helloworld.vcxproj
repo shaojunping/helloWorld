@@ -125,10 +125,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\terrain\t4m.cpp" />
+    <ClCompile Include="..\model_loading\model_loading.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_img.cpp" />
+    <ClCompile Include="sWidget.cpp" />
+    <ClCompile Include="SWindow.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +139,8 @@
     <ClInclude Include="MyCamera.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="sWidget.h" />
+    <ClInclude Include="SWindow.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
