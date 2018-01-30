@@ -83,25 +83,32 @@ void main()
 	float nDotL = dot(normalSum, normalize(lightDir)) * 0.5 + 0.5;
 	albedo +=  colorSum.rgb * nDotL;
 	albedo *= lightCol;
-	albedo = mix(albedo, albedo * wetCol.rgb, reflection.r);
+	albedo = mix(albedo, albedo * wetCol.rgb + vec3(0.2, 0.2, 0.2), reflection.r);
 	
 	vec3 ambient = colorSum.rgb * ambientScale;
 	vec3 viewDir = normalize(viewPos - FragPos);
 	//FragColor = vec4(ambient + albedo, 1.0);
 	
-	vec3 half = normalize(normalSum + viewDir);
+	vec3 half = normalize(lightDir + viewDir);
 	float aSum = colors[0].a * controlCol.r + colors[1].a * controlCol.g + colors[2].a * controlCol.b + colors[3].a * controlCol.a;
 	vec3 specular = lightCol * pow(max(0.0, dot(half, normalSum)), shininess) * aSum * specularScale;
 	//FragColor = vec4(specularSum, 1.0f);
 
 	vec4 rainMap = CalColor(rain, TexCoords);
-	vec3 rainNormal = getNormalFromMap(rainMap);
-	normalSum = mix(normalSum, rainNormal, rainFactor);
-	normalSum = normalize(normalSum);
-	vec3 reflectDir = reflect(viewDir, rainNormal);
-	vec3 emission = mix(vec3(0,0,0), texture(skybox, reflectDir).rgb, reflection.r);
+	vec3 rainNormal = getNormalFromMap(rainMap) * 2;
+	// normalSum = mix(normalSum, rainNormal * normalSum, rainFactor);
+	// normalSum = normalize(normalSum);
+	normalSum = rainNormal;
+	// vec3 reflectDir = reflect(viewDir, rainNormal);
+	vec3 I = normalize(WorldPos - viewPos);
+	vec3 R = reflect(I, normalSum);
+	vec3 reflectionCol = texture(skybox, R).rgb * 0.3;// * clamp(1.0 - clamp(dot(half, normalSum), 0.0, 1.0), 0.0, 1.0);
+	//FragColor = reflectionCol;
+	//vec3 emission = mix(vec3(0,0,0), texture(skybox, reflectDir).rgb, reflection.r);
 	//FragColor = vec4(emission * 1.4, 1.0);
-	FragColor = vec4(albedo + ambient + specular + emission, 1.0);
+	FragColor = vec4(albedo + ambient + specular + reflectionCol, 1.0);
+	//FragColor = vec4(clamp(dot(half, normalSum), 0.0, 1.0), 0.0, 0.0, 1.0);
+	//FragColor = vec4(albedo + ambient + specular, 1.0);
 }
 
 vec4 CalColor(TextureStruct texture1, vec2 TexCoords)

@@ -135,6 +135,7 @@
     <ClCompile Include="stb_img.cpp" />
     <ClCompile Include="sWidget.cpp" />
     <ClCompile Include="SWindow.cpp" />
+    <ClCompile Include="ST4mWindow.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,8 +147,10 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="svector.h" />
     <ClInclude Include="sWidget.h" />
     <ClInclude Include="SWindow.h" />
+    <ClInclude Include="ST4mWindow.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -48,6 +48,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ST4mWindow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -81,6 +84,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="grass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ST4mWindow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="svector.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

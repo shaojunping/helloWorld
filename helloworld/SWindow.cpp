@@ -81,7 +81,7 @@ SWindow::SWindow(const unsigned int mW, const unsigned int mH, const char *title
 	glfwSetCursorPosCallback(mWindow, mouse_callback);
 	glfwSetScrollCallback(mWindow, scroll_callback);
 	glfwSetMouseButtonCallback(mWindow, mouse_button_callback);
-	mCamera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f));
+	mCamera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
 SWindow::~SWindow()
@@ -137,8 +137,14 @@ void SWindow::Exec()
 	float lastFrame = 0.0f; // Time of last frame
 	glEnable(GL_DEPTH_TEST);
 
-	Grass grass("..//model_loading//plane.obj", "..//model_loading//shaders//1.model_loading.vs",
-		"..//model_loading//shaders//1.model_loading.fs");
+	/*Grass grass("..//model_loading//plane.obj", "..//model_loading//shaders//1.model_loading.vs",
+		"..//model_loading//shaders//1.model_loading.fs");*/
+	/*Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
+		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs"); */
+	Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
+		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs");
+	/*Grass grass("..//model_loading//planeFlipYz.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
+		"..//advanced_opengl//shaders//1.1.depth_testing.fs");*/
 	// build and compile our shader program
 	//Shader shader("..//model_loading//shaders//1.model_loading.vs",
 	//	"..//model_loading//shaders//1.model_loading.fs");
@@ -166,17 +172,14 @@ void SWindow::Exec()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//shader.use();
-
 		glm::mat4 projection = glm::perspective(glm::radians(mCamera->Zoom), (float)mW / (float)mH, 0.1f, 100.0f);
 		glm::mat4 view = mCamera->GetCameraMatrix();
 
-		/*shader.setMat4("projection", projection);
-		shader.setMat4("view", view);*/
-
 		//render the loaded model
 		glm::mat4 model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		grass.SetMats(model, view, projection);
 		grass.SetShaderTime("t", glfwGetTime());
 		grass.Draw();

@@ -525,9 +525,9 @@ namespace glm
 		tvec3<T, P> const & up
 	)
 	{
-		tvec3<T, P> const f(normalize(center - eye));
-		tvec3<T, P> const s(normalize(cross(f, up)));
-		tvec3<T, P> const u(cross(s, f));
+		tvec3<T, P> const f(normalize(center - eye));//-z
+		tvec3<T, P> const s(normalize(cross(f, up))); // +x
+		tvec3<T, P> const u(cross(s, f)); //+y
 
 		tmat4x4<T, P> Result(1);
 		Result[0][0] = s.x;

@@ -1,9 +1,10 @@
 #include "../helloworld/SWindow.h"
+#include "../helloworld/ST4mWindow.h"
 #include <iostream>
 
 // settings
 const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 1200;
+const unsigned int SCR_HEIGHT = 800;
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
 #endif
 
 	SWindow window(SCR_WIDTH, SCR_HEIGHT, "model loading");
+	//ST4mWindow window(SCR_WIDTH, SCR_HEIGHT, "model loading");
 	
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
