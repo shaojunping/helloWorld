@@ -28,6 +28,7 @@ struct Vertex {
 	glm::vec3 Tangent;
 	// bitangent
 	glm::vec3 Bitangent;
+	glm::vec4 VertexColor;
 };
 
 struct Texture
@@ -126,8 +127,10 @@ private:
 		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
 		// vertex bitangent
 		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
-
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)); 
+		// vertex color
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, VertexColor));
 		glBindVertexArray(0);
 	}
 	unsigned int getVbo()

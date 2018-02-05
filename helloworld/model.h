@@ -112,15 +112,33 @@ private:
 			else
 				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 			//tangent
-			vector.x = mesh->mTangents[i].x;
-			vector.y = mesh->mTangents[i].y;
-			vector.z = mesh->mTangents[i].z;
-			vertex.Tangent = vector;
+			if(NULL != mesh->mTangents)
+			{
+				vector.x = mesh->mTangents[i].x;
+				vector.y = mesh->mTangents[i].y;
+				vector.z = mesh->mTangents[i].z;
+				vertex.Tangent = vector;
+			}
+			
 			//bitangent
-			vector.x = mesh->mBitangents[i].x;
-			vector.y = mesh->mBitangents[i].y;
-			vector.z = mesh->mBitangents[i].z;
-			vertex.Bitangent = vector;
+			if (NULL != mesh->mBitangents)
+			{
+				vector.x = mesh->mBitangents[i].x;
+				vector.y = mesh->mBitangents[i].y;
+				vector.z = mesh->mBitangents[i].z;
+				vertex.Bitangent = vector;
+			}
+			
+			//vertex color
+			if (NULL != mesh->mColors)
+			{
+				glm::vec4 vertexCol;
+				vertexCol.x = (mesh->mColors[0])[i].r;// mesh->mColors[0][i]->r;
+				vertexCol.y = (mesh->mColors[0])[i].g;
+				vertexCol.z = (mesh->mColors[0])[i].b;
+				vertexCol.w = (mesh->mColors[0])[i].a;
+				vertex.VertexColor = vertexCol;
+			}
 			vertices.push_back(vertex);
 		}
 		//now wak through each of the mesh's faces 

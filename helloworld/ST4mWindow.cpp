@@ -56,6 +56,7 @@ void ST4mWindow::Exec()
 	shader.setInt("skybox", 11);
 
 	//Model ourModel("..//terrain//mesh//teapotYup.FBX");
+	//Model ourModel("..//terrain//mesh//t4mSmooth.obj");
 	Model ourModel("..//terrain//mesh//t4m.obj");
 	Mesh ourMesh = ourModel.meshes[0];
 	vector<Vertex> ourVertex = ourMesh.vertices;
@@ -202,10 +203,10 @@ void ST4mWindow::Exec()
 		shader.setVec4("rain.tex_st", glm::vec4(10.0f, 10.0f, 0.0f, 0.0f));
 
 		shader.setVec3("viewPos", mCamera->Position);
-		shader.setVec3("lightDir", glm::vec3(0.2f, 0.8f, 1.0f));
+		shader.setVec3("lightDir", glm::vec3(0.1f, 0.8f, 1.0f));
 		shader.setFloat("ambientScale", 0.2f);
 		shader.setFloat("specularScale", 1.5f);
-		shader.setVec3("lightCol", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader.setVec3("lightCol", glm::vec3(1.2f, 1.2f, 1.2f));
 		shader.setFloat("shininess", 64.0f);
 
 		//draw mesh

@@ -139,10 +139,12 @@ void SWindow::Exec()
 
 	/*Grass grass("..//model_loading//plane.obj", "..//model_loading//shaders//1.model_loading.vs",
 		"..//model_loading//shaders//1.model_loading.fs");*/
+	Grass grass("..//model_loading//grass//ms224_5.fbx", "..//model_loading//shaders//1.model_loading.vs",
+		"..//model_loading//shaders//1.model_loading.fs");
 	/*Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
 		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs"); */
-	Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
-		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs");
+	/*Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
+		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs");*/
 	/*Grass grass("..//model_loading//planeFlipYz.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
 		"..//advanced_opengl//shaders//1.1.depth_testing.fs");*/
 	// build and compile our shader program
