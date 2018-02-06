@@ -17,8 +17,8 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
 
-	SWindow window(SCR_WIDTH, SCR_HEIGHT, "wind grass");
-	//ST4mWindow t4mWindow(SCR_WIDTH, SCR_HEIGHT, "t4m");
+	//SWindow window(SCR_WIDTH, SCR_HEIGHT, "wind grass");
+	ST4mWindow t4mWindow(SCR_WIDTH, SCR_HEIGHT, "t4m");
 	
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -26,8 +26,8 @@ int main()
 		return -1;
 	}
 
-	window.Exec();
-	//t4mWindow.Exec();
+	//window.Exec();
+	t4mWindow.Exec();
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
 	glfwTerminate();

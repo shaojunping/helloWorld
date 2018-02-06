@@ -130,7 +130,7 @@ private:
 			}
 			
 			//vertex color
-			if (NULL != mesh->mColors)
+			if (NULL != mesh->mColors[0])
 			{
 				glm::vec4 vertexCol;
 				vertexCol.x = (mesh->mColors[0])[i].r;// mesh->mColors[0][i]->r;

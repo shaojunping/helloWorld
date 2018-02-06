@@ -70,7 +70,6 @@ void main()
 	//FragColor = fixed4(colors[0] + colors[1] + colors[2] + colors[3], 1.0);
 	vec4 colorSum = colors[0] + colors[1] + colors[2] + colors[3];
 
-	vec3 albedo = vec3(0.0);
 	vec3 normalVecs[NUM_TEXS];
 	for(int i = 0; i < NUM_TEXS; i++)
 	{
@@ -81,9 +80,9 @@ void main()
 	normalSum = normalize(mix(normalSum, vec3(0.0, 1.0, 0.0), reflectionFactor * reflection.r));
 	
 	float nDotL = max(0, dot(normalSum, normalize(lightDir))) * 0.5 + 0.5;
-	albedo +=  colorSum.rgb * nDotL;
+	vec3 albedo =  colorSum.rgb * nDotL;
 	albedo *= lightCol;
-	albedo = mix(albedo, albedo * wetCol.rgb + vec3(0.2, 0.2, 0.2), reflection.r);
+	albedo = mix(albedo, albedo * wetCol.rgb + vec3(0.2, 0.2, 0.2),  rainFactor * reflection.r);
 	
 	//vec3 ambient = colorSum.rgb * ambientScale;
 	vec3 viewDir = normalize(viewPos - WorldPos);
@@ -99,16 +98,18 @@ void main()
 	vec3 rainNormal = getNormalFromMap(rainMap);
 	// normalSum = mix(normalSum, rainNormal * normalSum, rainFactor);
 	// normalSum = normalize(normalSum);
-	normalSum = normalize(rainNormal * normalSum);
+	vec3 rainSum = mix(normalSum, normalize(rainNormal + normalSum), rainFactor);
 	// vec3 reflectDir = reflect(viewDir, rainNormal);
 	//vec3 I = normalize(WorldPos - viewPos);
 	vec3 R = reflect(-viewDir, normalSum);
-	vec3 reflectionCol = texture(skybox, R).rgb * 0.2;// * clamp(1.0 - clamp(dot(half, normalSum), 0.0, 1.0), 0.0, 1.0);
+	vec3 rainR = reflect(-viewDir, rainSum);
+	vec3 reflectionCol = mix(texture(skybox, R).rgb * 0.2, texture(skybox, rainR).rgb * 0.2, rainFactor);// * clamp(1.0 - clamp(dot(half, normalSum), 0.0, 1.0), 0.0, 1.0);
 	//FragColor = reflectionCol;
 	//vec3 emission = mix(vec3(0,0,0), texture(skybox, reflectDir).rgb, reflection.r);
 	//FragColor = vec4(emission * 1.4, 1.0);
 	//FragColor = vec4(albedo + ambient + specular + reflectionCol, 1.0);
-	FragColor = vec4(albedo + specular + reflectionCol, 1.0);
+	float alpha = mix(1.0, 0.7, reflection.r);
+	FragColor = vec4(albedo + specular + reflectionCol, alpha);
 	//FragColor = vec4(clamp(dot(half, normalSum), 0.0, 1.0), 0.0, 0.0, 1.0);
 	//FragColor = vec4(albedo + ambient + specular, 1.0);
 }

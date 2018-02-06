@@ -11,6 +11,7 @@ public:
 	~ST4mWindow();
 	
 	virtual void Exec();
+	virtual void processInput(float deltaTime);
 
 private:
 

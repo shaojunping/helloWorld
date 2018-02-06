@@ -15,6 +15,7 @@ bool enableRain = true;
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 1000;
 
+void CreateCubeData(unsigned int &cubeVAO, unsigned int &cubeVBO);
 ST4mWindow::ST4mWindow(const unsigned int mW, const unsigned int mH, const char *title):SWindow(mW, mH, title)
 {
 
@@ -158,6 +159,11 @@ void ST4mWindow::Exec()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	unsigned int frameCount = 0;
 	unsigned int curFrame = 0;
+
+	unsigned int cubeVBO, cubeVAO;
+	CreateCubeData(cubeVAO, cubeVBO);
+	Shader colorShader("..//light//shader//1.colors.vs", "..//light//shader//1.colors.fs");
+	//Shader ambientShader("..//light//shader//1.colors.vs", "..//light//shader//1.ambient.fs");
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(mWindow))
@@ -174,14 +180,37 @@ void ST4mWindow::Exec()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.use();
-
 		glm::mat4 projection = glm::perspective(glm::radians(mCamera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = mCamera->GetCameraMatrix();
 		//view = glm::rotate(view, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
 
 		glm::mat4 model = glm::mat4();
+
+		colorShader.use();
+		colorShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		colorShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		colorShader.setMat4("projection", projection);
+		colorShader.setMat4("view", view);
+		colorShader.setMat4("model", model);
+		// render the cube
+		glBindVertexArray(cubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		/*ambientShader.use();
+		ambientShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		ambientShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		ambientShader.setMat4("projection", projection);
+		ambientShader.setMat4("view", view);
+		model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+		ambientShader.setMat4("model", model);*/
+		// render the cube
+		glBindVertexArray(cubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		shader.use();
+
+		model = glm::mat4();
 		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.50f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
 
@@ -200,14 +229,14 @@ void ST4mWindow::Exec()
 		shader.setVec4("normals[3].tex_st", glm::vec4(30.0f, 30.0f, 0.0f, 0.0f));
 		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
-		shader.setVec4("rain.tex_st", glm::vec4(10.0f, 10.0f, 0.0f, 0.0f));
+		shader.setVec4("rain.tex_st", glm::vec4(80.0f, 80.0f, 0.0f, 0.0f));
 
 		shader.setVec3("viewPos", mCamera->Position);
-		shader.setVec3("lightDir", glm::vec3(0.1f, 0.8f, 1.0f));
+		shader.setVec3("lightDir", glm::vec3(0.8f, 0.2f, 1.0f));
 		shader.setFloat("ambientScale", 0.2f);
 		shader.setFloat("specularScale", 1.5f);
 		shader.setVec3("lightCol", glm::vec3(1.2f, 1.2f, 1.2f));
-		shader.setFloat("shininess", 64.0f);
+		shader.setFloat("shininess", 32.0f);
 
 		//draw mesh
 		glBindVertexArray(m_vao);
@@ -263,6 +292,8 @@ void ST4mWindow::Exec()
 		glDrawElements(GL_TRIANGLES, m_indice.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
+
+
 		glDepthFunc(GL_LEQUAL);
 		skyboxShader.use();
 		skyboxShader.setMat4("projection", projection);
@@ -276,11 +307,92 @@ void ST4mWindow::Exec()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 		glDepthFunc(GL_LESS); // set depth function back to default
-							  //always good practice to set everything back to defaults
-							  //glActiveTexture(GL_TEXTURE0);
-							  // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-							  // -------------------------------------------------------------------------------
+		//always good practice to set everything back to defaults
+		//glActiveTexture(GL_TEXTURE0);
+		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
 	}
+} 
+
+
+void ST4mWindow::processInput(float deltaTime)
+{
+	if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(mWindow, true);
+
+	if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
+		mCamera->ProcessInput(CameraDirection::FORWARD, deltaTime);
+	if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
+		mCamera->ProcessInput(CameraDirection::BACKWARD, deltaTime);
+	if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
+		mCamera->ProcessInput(CameraDirection::LEFT, deltaTime);
+	if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
+		mCamera->ProcessInput(CameraDirection::RIGHT, deltaTime);
+
+	if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS)
+		enableRain = !enableRain;
+}
+
+void CreateCubeData(unsigned int &cubeVAO, unsigned int &cubeVBO)
+{
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+
+		-0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+
+		-0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
+	};
+	// first, configure the cube's VAO (and VBO)
+	//unsigned int VBO, cubeVAO;
+	glGenVertexArrays(1, &cubeVAO);
+	glGenBuffers(1, &cubeVBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindVertexArray(cubeVAO);
+
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 }
