@@ -32,3 +32,13 @@ void Object::Draw()
 {
 	mModel->Draw(*mShader);
 }
+
+void Object::DrawInstanced(float amount)
+{
+	mModel->DrawInstanced(*mShader, amount);
+}
+
+Model *Object::GetMode()
+{
+	return mModel;
+}

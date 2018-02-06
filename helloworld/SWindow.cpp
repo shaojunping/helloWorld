@@ -142,6 +142,46 @@ void SWindow::Exec()
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glm::vec2 translations[20];
+	srand(glfwGetTime());
+	GLuint grassNum = 20;
+	glm::mat4 *modelMatrices;
+	modelMatrices = new glm::mat4[grassNum];
+	for (GLuint i = 0; i < grassNum; i++)
+	{
+		glm::mat4 grassModel = glm::mat4();
+		GLuint x = (rand() % 100) * 0.4;
+		GLuint y = (rand() % 100) * 0.4;
+		grassModel = glm::translate(grassModel, glm::vec3(x, 0, y));
+		modelMatrices[i] = grassModel;
+		//translations[i] = trans;
+	}
+	unsigned int instanceVBO;
+	glGenBuffers(1, &instanceVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * grassNum, &modelMatrices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	unsigned int grassVAO = grass.GetMode()->meshes[0].VAO;
+	glBindVertexArray(grassVAO);
+	/*glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));*/
+	// set attribute pointers for matrix (4 times vec4)
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+	glEnableVertexAttribArray(7);
+	glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+	glEnableVertexAttribArray(8);
+	glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+	glEnableVertexAttribArray(9);
+	glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+	glVertexAttribDivisor(6, 1);
+	glVertexAttribDivisor(7, 1);
+	glVertexAttribDivisor(8, 1);
+	glVertexAttribDivisor(9, 1);
+
+	glBindVertexArray(0);
 
 	while (!glfwWindowShouldClose(mWindow))
 	{
@@ -168,7 +208,10 @@ void SWindow::Exec()
 		//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		grass.SetMats(model, view, projection);
 		grass.SetShaderTime("t", glfwGetTime());
-		grass.Draw();
+		glBindVertexArray(grass.GetMode()->meshes[0].VAO);
+		glDrawElementsInstanced(GL_TRIANGLES, grass.GetMode()->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, grassNum);
+		glBindVertexArray(0);
+		//grass.DrawInstanced(grassNum);
 		/*shader.setMat4("model", model);
 		shader.setFloat("t", glfwGetTime());
 		ourModel.Draw(shader);*/

@@ -15,7 +15,9 @@ public:
 	Object(string const & modelPath, const GLchar *vertexShader, const GLchar *fragmentShader);
 	virtual ~Object();
 	virtual void Draw();
+	virtual void DrawInstanced(float amount);
 	virtual void SetMats(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+	virtual Model *GetMode();
 protected:
 	Shader *mShader;
 	Model *mModel;

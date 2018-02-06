@@ -92,6 +92,42 @@ public:
 		glActiveTexture(GL_TEXTURE0);
 	}
 
+	//render the mesh
+	void DrawInstanced(Shader shader, int amount)
+	{
+		unsigned int diffuseNr = 1;
+		unsigned int specularNr = 1;
+		unsigned int normalNr = 1;
+		unsigned int heightNr = 1;
+		for (unsigned int i = 0; i < textures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+			stringstream ss;
+			string number;
+			string name = textures[i].type;
+			if (name == "texture_diffuse")
+				ss << diffuseNr++;
+			else if (name == "texture_specular")
+				ss << specularNr++;
+			else if (name == "texture_normal")
+				ss << normalNr++;
+			else if (name == "texture_height")
+				ss << heightNr++;
+			//transfer unsigned int to stream
+			number = ss.str();
+			glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		}
+
+		//draw mesh
+		glBindVertexArray(VAO);
+		glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, amount);
+		glBindVertexArray(0);
+
+		//always good practice to set everything back to defaults
+		glActiveTexture(GL_TEXTURE0);
+	}
+
 private:
 	//Render data
 	unsigned int VBO, EBO;
