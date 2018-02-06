@@ -137,24 +137,8 @@ void SWindow::Exec()
 	float lastFrame = 0.0f; // Time of last frame
 	glEnable(GL_DEPTH_TEST);
 
-	/*Grass grass("..//model_loading//plane.obj", "..//model_loading//shaders//1.model_loading.vs",
-		"..//model_loading//shaders//1.model_loading.fs");*/
 	Grass grass("..//model_loading//grass//ms224_5.fbx", "..//model_loading//shaders//1.model_loading.vs",
 		"..//model_loading//shaders//1.model_loading.fs");
-	/*Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
-		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs"); */
-	/*Grass grass("..//model_loading//planeTixingNotFlip.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
-		"..//advanced_opengl//shaders//1.1.coordinateTesting.fs");*/
-	/*Grass grass("..//model_loading//planeFlipYz.obj", "..//advanced_opengl//shaders//1.1.depth_testing.vs",
-		"..//advanced_opengl//shaders//1.1.depth_testing.fs");*/
-	// build and compile our shader program
-	//Shader shader("..//model_loading//shaders//1.model_loading.vs",
-	//	"..//model_loading//shaders//1.model_loading.fs");
-
-	////Model ourModel("..//model_loading//nanosuit//nanosuit.obj");
-	////Model ourModel("..//model_loading//grass//ms224_5.fbx");
-	////Model ourModel("..//terrain//mesh//planeYup.fbx");
-	//Model ourModel("..//model_loading//plane.obj");
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

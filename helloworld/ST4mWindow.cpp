@@ -11,6 +11,7 @@
 const unsigned int NUM_TEXS = 4;
 const unsigned int NUM_RAIN_FRAMES = 10;
 bool enableRain = true;
+bool enableSnow = false;
 
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 1000;
@@ -83,6 +84,8 @@ void ST4mWindow::Exec()
 		const char* texturePath = const_cast<char*>(num.c_str());
 		rainFrames[i] = Texture2D(texturePath, Repeat);
 	}
+	Texture2D snowDiffuse = Texture2D("..//terrain//textures//Snow_diffuse_spec2.png", Repeat);
+	Texture2D snowNormal = Texture2D("..//terrain//textures//Snow_normal.png", Repeat);
 
 	unsigned int m_vao = ourMesh.VAO;
 	vector<unsigned int> m_indice = ourMesh.indices;
@@ -230,6 +233,8 @@ void ST4mWindow::Exec()
 		shader.setVec4("control.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("reflection.tex_st", glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
 		shader.setVec4("rain.tex_st", glm::vec4(80.0f, 80.0f, 0.0f, 0.0f));
+		shader.setVec4("snowDiffuse.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
+		shader.setVec4("snowNormal.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
 
 		shader.setVec3("viewPos", mCamera->Position);
 		shader.setVec3("lightDir", glm::vec3(0.8f, 0.2f, 1.0f));
@@ -275,6 +280,10 @@ void ST4mWindow::Exec()
 		glActiveTexture(GL_TEXTURE10);
 		glBindTexture(GL_TEXTURE_2D, rainFrames[curFrame].m_ID);
 		glActiveTexture(GL_TEXTURE11);
+		glBindTexture(GL_TEXTURE_2D, snowDiffuse.m_ID);
+		glActiveTexture(GL_TEXTURE12);
+		glBindTexture(GL_TEXTURE_2D, snowNormal.m_ID);
+		glActiveTexture(GL_TEXTURE13);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.m_ID);
 
 		if (enableRain)
@@ -289,10 +298,17 @@ void ST4mWindow::Exec()
 			shader.setFloat("reflectionFactor", 0.0f);
 			shader.setFloat("rainFactor", 0.0);
 		}
+
+		if (enableSnow)
+		{
+			shader.setFloat("snowFactor", 0.0);
+		}
+		else
+		{
+			shader.setFloat("snowFactor", 1.0);
+		}
 		glDrawElements(GL_TRIANGLES, m_indice.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-
-
 
 		glDepthFunc(GL_LEQUAL);
 		skyboxShader.use();
@@ -331,8 +347,25 @@ void ST4mWindow::processInput(float deltaTime)
 	if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
 		mCamera->ProcessInput(CameraDirection::RIGHT, deltaTime);
 
-	if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS)
-		enableRain = !enableRain;
+	if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(mWindow, GLFW_KEY_Y) == GLFW_PRESS)
+	{
+		enableRain = true;
+		enableSnow = false;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(mWindow, GLFW_KEY_N) == GLFW_PRESS)
+	{
+		enableRain = false;
+	}
+
+	if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && glfwGetKey(mWindow, GLFW_KEY_Z) == GLFW_PRESS)
+	{
+		enableSnow = true;
+		enableRain = false;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && glfwGetKey(mWindow, GLFW_KEY_X) == GLFW_PRESS)
+	{
+		enableSnow = false;
+	}
 }
 
 void CreateCubeData(unsigned int &cubeVAO, unsigned int &cubeVBO)
