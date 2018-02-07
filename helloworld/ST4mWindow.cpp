@@ -7,6 +7,7 @@
 #include "../helloworld/Texture.h"
 
 #include <iostream>
+using namespace std;
 
 const unsigned int NUM_TEXS = 4;
 const unsigned int NUM_RAIN_FRAMES = 10;
@@ -35,7 +36,8 @@ void ST4mWindow::Exec()
 	float deltaTime = 0.0f;	// Time between current frame and last frame
 	float lastFrame = 0.0f; // Time of last frame
 	glEnable(GL_DEPTH_TEST);
-
+	GLenum error = glGetError();
+	//std::cout << "error: " << error << std::endl;
 	/*Grass grass("..//model_loading//plane.obj", "..//terrain//shaders//t4m.vs",
 		"..//terrain//shaders//t4m.fs");*/
 	
@@ -51,14 +53,26 @@ void ST4mWindow::Exec()
 		shader.setInt("diffuses[" + num + "].sample", i);
 		shader.setInt("normals[" + num + "].sample", i + 4);
 	}
-
 	shader.setInt("control.sample", 8);
 	shader.setInt("reflection.sample", 9);
 	shader.setInt("rain.sample", 10);
-	shader.setInt("skybox", 11);
+	shader.setInt("snowDiffuse.sample", 11);
+	shader.setInt("snowNormal.sample", 12);
+	shader.setInt("skybox", 13);
 
+	/*for (int i = 0; i < NUM_TEXS; i++)
+	{
+		stringstream ss;
+		ss << i;
+		string num = ss.str();
+		shader.setInt("diffuses[" + num + "].sample", i);
+	}
+	shader.setInt("control.sample", 4);
+	shader.setInt("snowDiffuse.sample", 5);
+	error = glGetError();
+	std::cout << "error: " << error << std::endl;
 	//Model ourModel("..//terrain//mesh//teapotYup.FBX");
-	//Model ourModel("..//terrain//mesh//t4mSmooth.obj");
+	//Model ourModel("..//terrain//mesh//t4mSmooth.obj");*/
 	Model ourModel("..//terrain//mesh//t4m.obj");
 	Mesh ourMesh = ourModel.meshes[0];
 	vector<Vertex> ourVertex = ourMesh.vertices;
@@ -86,7 +100,8 @@ void ST4mWindow::Exec()
 	}
 	Texture2D snowDiffuse = Texture2D("..//terrain//textures//Snow_diffuse_spec2.png", Repeat);
 	Texture2D snowNormal = Texture2D("..//terrain//textures//Snow_normal.png", Repeat);
-
+	/*error = glGetError();
+	std::cout << "error: " << error << std::endl;*/
 	unsigned int m_vao = ourMesh.VAO;
 	vector<unsigned int> m_indice = ourMesh.indices;
 
@@ -146,7 +161,8 @@ void ST4mWindow::Exec()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
+	error = glGetError();
+	std::cout << "error 165: " << error << std::endl;
 	std::vector<std::string> faces
 	{
 		"..//advanced_opengl//skybox//right.jpg",
@@ -159,7 +175,7 @@ void ST4mWindow::Exec()
 	Cubemap skybox(faces);
 	skyboxShader.use();
 	skyboxShader.setInt("skybox", 0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_COLOR);
 	unsigned int frameCount = 0;
 	unsigned int curFrame = 0;
 
@@ -168,7 +184,8 @@ void ST4mWindow::Exec()
 	Shader colorShader("..//light//shader//1.colors.vs", "..//light//shader//1.colors.fs");
 	//Shader ambientShader("..//light//shader//1.colors.vs", "..//light//shader//1.ambient.fs");
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+	error = glGetError();
+	std::cout << "error 188: " << error << std::endl;
 	while (!glfwWindowShouldClose(mWindow))
 	{
 		float currentFrame = glfwGetTime();
@@ -207,10 +224,9 @@ void ST4mWindow::Exec()
 		ambientShader.setMat4("view", view);
 		model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
 		ambientShader.setMat4("model", model);*/
-		// render the cube
-		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		
+		error = glGetError();
+		std::cout << "error229: " << error << std::endl;
 		shader.use();
 
 		model = glm::mat4();
@@ -236,6 +252,14 @@ void ST4mWindow::Exec()
 		shader.setVec4("snowDiffuse.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
 		shader.setVec4("snowNormal.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
 
+		GLenum error = glGetError();
+		std::cout << "error: " << error << std::endl;
+		//std::cout <<  
+		/*GLfloat data;
+		glGetFloatv(error, &data);
+		std::cout << "error: " << error << std::endl;
+		GL_NO_ERROR*/
+
 		shader.setVec3("viewPos", mCamera->Position);
 		shader.setVec3("lightDir", glm::vec3(0.8f, 0.2f, 1.0f));
 		shader.setFloat("ambientScale", 0.2f);
@@ -253,6 +277,10 @@ void ST4mWindow::Exec()
 		glBindTexture(GL_TEXTURE_2D, diffuse3.m_ID);
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, diffuse4.m_ID);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, control.m_ID);
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, snowDiffuse.m_ID);
 		glActiveTexture(GL_TEXTURE4);
 		glBindTexture(GL_TEXTURE_2D, normal1.m_ID);
 		glActiveTexture(GL_TEXTURE5);
@@ -301,11 +329,11 @@ void ST4mWindow::Exec()
 
 		if (enableSnow)
 		{
-			shader.setFloat("snowFactor", 0.0);
+			shader.setFloat("snowFactor", 1.0);
 		}
 		else
 		{
-			shader.setFloat("snowFactor", 1.0);
+			shader.setFloat("snowFactor", 0.0);
 		}
 		glDrawElements(GL_TRIANGLES, m_indice.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
