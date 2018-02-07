@@ -92,7 +92,7 @@ void main()
 
 	float nDotL = max(0, dot(normalSum, normalize(lightDir))) * 0.5 + 0.5;
 	nDotL = mix(nDotL, 1.0, snowFactor);
-	colorSum.rgb = mix(colorSum.rgb, colorSum.rgb * wetCol.rgb + vec3(0.2, 0.2, 0.2),  rainFactor * reflection.r);
+	colorSum.rgb = mix(colorSum.rgb, colorSum.rgb * wetCol.rgb,  rainFactor * reflection.r);
 	//FragColor = colorSum;
 	colorSum.rgb = mix(colorSum.rgb, snow.rgb, snowFactor);
 	//FragColor = colorSum;
