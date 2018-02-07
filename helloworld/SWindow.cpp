@@ -160,7 +160,6 @@ void SWindow::Exec()
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * grassNum, &modelMatrices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	unsigned int grassVAO = grass.GetMode()->meshes[0].VAO;
 	glBindVertexArray(grassVAO);
@@ -208,10 +207,10 @@ void SWindow::Exec()
 		//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		grass.SetMats(model, view, projection);
 		grass.SetShaderTime("t", glfwGetTime());
-		glBindVertexArray(grass.GetMode()->meshes[0].VAO);
-		glDrawElementsInstanced(GL_TRIANGLES, grass.GetMode()->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, grassNum);
-		glBindVertexArray(0);
-		//grass.DrawInstanced(grassNum);
+		//glBindVertexArray(grass.GetMode()->meshes[0].VAO);
+		//glDrawElementsInstanced(GL_TRIANGLES, grass.GetMode()->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, grassNum);
+		//glBindVertexArray(0);
+		grass.DrawInstanced(grassNum);
 		/*shader.setMat4("model", model);
 		shader.setFloat("t", glfwGetTime());
 		ourModel.Draw(shader);*/
