@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "helloworld", "helloworld\helloworld.vcxproj", "{1EA246CC-2B14-4386-97AA-61567DE65B5D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "breakout", "breakout\breakout.vcxproj", "{93531F72-E60A-463B-8582-F660751E00B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,14 @@ Global
 		{1EA246CC-2B14-4386-97AA-61567DE65B5D}.Release|Win32.Build.0 = Release|Win32
 		{1EA246CC-2B14-4386-97AA-61567DE65B5D}.Release|x64.ActiveCfg = Release|x64
 		{1EA246CC-2B14-4386-97AA-61567DE65B5D}.Release|x64.Build.0 = Release|x64
+		{93531F72-E60A-463B-8582-F660751E00B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{93531F72-E60A-463B-8582-F660751E00B5}.Debug|Win32.Build.0 = Debug|Win32
+		{93531F72-E60A-463B-8582-F660751E00B5}.Debug|x64.ActiveCfg = Debug|x64
+		{93531F72-E60A-463B-8582-F660751E00B5}.Debug|x64.Build.0 = Debug|x64
+		{93531F72-E60A-463B-8582-F660751E00B5}.Release|Win32.ActiveCfg = Release|Win32
+		{93531F72-E60A-463B-8582-F660751E00B5}.Release|Win32.Build.0 = Release|Win32
+		{93531F72-E60A-463B-8582-F660751E00B5}.Release|x64.ActiveCfg = Release|x64
+		{93531F72-E60A-463B-8582-F660751E00B5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

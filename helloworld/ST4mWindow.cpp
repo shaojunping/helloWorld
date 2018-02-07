@@ -28,8 +28,6 @@ ST4mWindow::~ST4mWindow()
 
 }
 
-
-
 void ST4mWindow::Exec()
 {
 	//time
