@@ -197,7 +197,6 @@ void ST4mWindow::Exec()
 		// ------
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glm::mat4 projection = glm::perspective(glm::radians(mCamera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = mCamera->GetCameraMatrix();
 		//view = glm::rotate(view, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -224,7 +223,10 @@ void ST4mWindow::Exec()
 		ambientShader.setMat4("model", model);*/
 		
 		error = glGetError();
-		std::cout << "error229: " << error << std::endl;
+		if (error > 0)
+		{
+			std::cout << "error229: " << error << std::endl;
+		}
 		shader.use();
 
 		model = glm::mat4();
@@ -250,8 +252,12 @@ void ST4mWindow::Exec()
 		shader.setVec4("snowDiffuse.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
 		shader.setVec4("snowNormal.tex_st", glm::vec4(15.0f, 15.0f, 0.0f, 0.0f));
 
-		GLenum error = glGetError();
-		std::cout << "error: " << error << std::endl;
+		error = glGetError();
+		if (error > 0)
+		{
+			std::cout << "error254: " << error << std::endl;
+
+		}
 		//std::cout <<  
 		/*GLfloat data;
 		glGetFloatv(error, &data);
@@ -291,10 +297,10 @@ void ST4mWindow::Exec()
 		glBindTexture(GL_TEXTURE_2D, control.m_ID);
 		glActiveTexture(GL_TEXTURE9);
 		glBindTexture(GL_TEXTURE_2D, reflection.m_ID);
-		if (curFrame < NUM_RAIN_FRAMES)
+		if (curFrame < NUM_RAIN_FRAMES - 1)
 		{
 			frameCount++;
-			if (frameCount % 2 == 0)
+			if (frameCount % 4 == 0)
 				curFrame++;
 		}
 		else
@@ -311,20 +317,30 @@ void ST4mWindow::Exec()
 		glBindTexture(GL_TEXTURE_2D, snowNormal.m_ID);
 		glActiveTexture(GL_TEXTURE13);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.m_ID);
+		error = glGetError();
+		if (error > 0)
+		{
+			std::cout << "error320: " << error << std::endl;
 
+		}
 		if (enableRain)
 		{
-			shader.setVec3("wetCol", glm::vec3(1.0f, 0.9f, 0.9f));
+			shader.setVec4("wetCol", glm::vec4(1.0f, 0.9f, 0.9f, 1.0f));
 			shader.setFloat("reflectionFactor", 1.0f);
 			shader.setFloat("rainFactor", 1.0);
 		}
 		else
 		{
-			shader.setVec3("wetCol", glm::vec3(1.0f, 1.0f, 1.0f));
+			shader.setVec4("wetCol", glm::vec4(1.0f, 0.9f, 0.9f, 1.0f));
 			shader.setFloat("reflectionFactor", 0.0f);
 			shader.setFloat("rainFactor", 0.0);
 		}
+		error = glGetError();
+		if (error > 0)
+		{
+			std::cout << "error340: " << error << std::endl;
 
+		}
 		if (enableSnow)
 		{
 			shader.setFloat("snowFactor", 1.0);
