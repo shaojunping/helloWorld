@@ -118,12 +118,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\helloworld\stb_image.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="resource_manager.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\helloworld\glad.c" />
+    <ClCompile Include="..\helloworld\stb_img.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="resource_manager.cpp" />
