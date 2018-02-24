@@ -105,7 +105,7 @@ void main()
 	// FragColor = vec4(albedo, 1.0);
 	vec3 half = normalize(normalize(lightDir) + viewDir);
 	float aSum = colorSum.a;
-	float shininessFactor = shininess * mix(1.0, 0.2, reflection.r);
+	float shininessFactor = shininess * mix(1.0, 0.5, reflection.r);
 	//vec3 specular = lightCol * pow(max(0.0, dot(half, normalSum)), shininess) * aSum * specularScale;
 	vec3 specular = lightCol * pow(max(0.0, dot(half, normalSum)), shininessFactor) * aSum;
 	// FragColor = vec4(specular, 1.0f);
