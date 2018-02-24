@@ -186,7 +186,7 @@ void ST4mWindow::Exec()
 	error = glGetError();
 	std::cout << "error 188: " << error << std::endl;
 
-	Grass grass("..//model_loading//grass//ms224_5.fbx", "..//model_loading//shaders//1.model_loading.vs",
+	Grass grass("..//model_loading//grass//ms224_5_new.fbx", "..//model_loading//shaders//1.model_loading.vs",
 		"..//model_loading//shaders//1.model_loading.fs");
 	srand(glfwGetTime());
 	GLuint grassNum = 20;
@@ -195,9 +195,9 @@ void ST4mWindow::Exec()
 	for (GLuint i = 0; i < grassNum; i++)
 	{
 		glm::mat4 grassModel = glm::mat4();
-		GLuint x = (rand() % 100) * 0.4;
-		GLuint y = (rand() % 100) * 0.4;
-		grassModel = glm::translate(grassModel, glm::vec3(x, -1, y));
+		GLuint x = (rand() % 100) * 0.6;
+		GLuint y = (rand() % 100) * 0.6;
+		grassModel = glm::translate(grassModel, glm::vec3(x, 0, y));
 		modelMatrices[i] = grassModel;
 		//translations[i] = trans;
 	}
@@ -396,7 +396,7 @@ void ST4mWindow::Exec()
 
 		//render grass
 		model = glm::mat4();
-		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		grass.SetMats(model, view, projection);
