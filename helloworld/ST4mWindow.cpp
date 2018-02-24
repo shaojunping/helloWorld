@@ -325,13 +325,13 @@ void ST4mWindow::Exec()
 		}
 		if (enableRain)
 		{
-			shader.setVec4("wetCol", glm::vec4(1.0f, 0.9f, 0.9f, 1.0f));
+			shader.setVec4("wetCol", glm::vec4(0.25f, 0.2f, 0.2f, 1.0f));
 			shader.setFloat("reflectionFactor", 1.0f);
 			shader.setFloat("rainFactor", 1.0);
 		}
 		else
 		{
-			shader.setVec4("wetCol", glm::vec4(0.25f, 0.2f, 0.2f, 1.0f));
+			shader.setVec4("wetCol", glm::vec4(1.0f));
 			shader.setFloat("reflectionFactor", 0.0f);
 			shader.setFloat("rainFactor", 0.0);
 		}
