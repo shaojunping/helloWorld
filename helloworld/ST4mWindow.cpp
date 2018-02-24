@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "grass.h"
 #include "../helloworld/Texture.h"
+#include "../helloworld/grass.h"
 
 #include <iostream>
 using namespace std;
@@ -184,6 +185,47 @@ void ST4mWindow::Exec()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	error = glGetError();
 	std::cout << "error 188: " << error << std::endl;
+
+	Grass grass("..//model_loading//grass//ms224_5.fbx", "..//model_loading//shaders//1.model_loading.vs",
+		"..//model_loading//shaders//1.model_loading.fs");
+	srand(glfwGetTime());
+	GLuint grassNum = 20;
+	glm::mat4 *modelMatrices;
+	modelMatrices = new glm::mat4[grassNum];
+	for (GLuint i = 0; i < grassNum; i++)
+	{
+		glm::mat4 grassModel = glm::mat4();
+		GLuint x = (rand() % 100) * 0.4;
+		GLuint y = (rand() % 100) * 0.4;
+		grassModel = glm::translate(grassModel, glm::vec3(x, -1, y));
+		modelMatrices[i] = grassModel;
+		//translations[i] = trans;
+	}
+	unsigned int instanceVBO;
+	glGenBuffers(1, &instanceVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * grassNum, &modelMatrices[0], GL_STATIC_DRAW);
+
+	unsigned int grassVAO = grass.GetMode()->meshes[0].VAO;
+	glBindVertexArray(grassVAO);
+	/*glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));*/
+	// set attribute pointers for matrix (4 times vec4)
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+	glEnableVertexAttribArray(7);
+	glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+	glEnableVertexAttribArray(8);
+	glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+	glEnableVertexAttribArray(9);
+	glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+	glVertexAttribDivisor(6, 1);
+	glVertexAttribDivisor(7, 1);
+	glVertexAttribDivisor(8, 1);
+	glVertexAttribDivisor(9, 1);
+
+	glBindVertexArray(0);
 	while (!glfwWindowShouldClose(mWindow))
 	{
 		float currentFrame = glfwGetTime();
@@ -351,6 +393,15 @@ void ST4mWindow::Exec()
 		}
 		glDrawElements(GL_TRIANGLES, m_indice.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+
+		//render grass
+		model = glm::mat4();
+		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		grass.SetMats(model, view, projection);
+		grass.SetShaderTime("t", glfwGetTime());
+		grass.DrawInstanced(grassNum);
 
 		glDepthFunc(GL_LEQUAL);
 		skyboxShader.use();
