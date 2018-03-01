@@ -1,4 +1,4 @@
-#include "SWindow.h"
+#include "SSkyboxWindow.h"
 #include "../helloworld/myCamera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-SWindow *gWindow;
+SSkyboxWindow *gWindow;
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -63,12 +63,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	gWindow->ProcessMouseScroll(yoffset);
 }
 
-void SWindow::ProcessMouseScroll(float yoffset)
+void SSkyboxWindow::ProcessMouseScroll(float yoffset)
 {
 	mCamera->ProcessMouseScroll(yoffset);
 }
 
-SWindow::SWindow(const unsigned int mW, const unsigned int mH, const char *title):SWidget(mW, mH), mMouseX(0), mMouseY(0), mIsFirstMove(true), mIsClosed(false), mCamera(NULL)
+SSkyboxWindow::SSkyboxWindow(const unsigned int mW, const unsigned int mH, const char *title):SWidget(mW, mH), mMouseX(0), mMouseY(0), mIsFirstMove(true), mIsClosed(false), mCamera(NULL)
 {
 	mWindow = glfwCreateWindow(mW, mH, title, NULL, NULL);
 	if (mWindow == NULL)
@@ -84,7 +84,7 @@ SWindow::SWindow(const unsigned int mW, const unsigned int mH, const char *title
 	mCamera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
-SWindow::~SWindow()
+SSkyboxWindow::~SSkyboxWindow()
 {
 	if (mCamera != NULL)
 	{
@@ -92,7 +92,7 @@ SWindow::~SWindow()
 	}
 }
 
-void SWindow::OnMouseMove(double xpos, double ypos)
+void SSkyboxWindow::OnMouseMove(double xpos, double ypos)
 {
 	if (mIsFirstMove)
 	{
@@ -115,22 +115,22 @@ void SWindow::OnMouseMove(double xpos, double ypos)
 	}
 }
 
-void SWindow::OnMousePress(MouseType type)
+void SSkyboxWindow::OnMousePress(MouseType type)
 {
 	mIsMousePressed[type] = true;
 }
 
-void SWindow::OnMouseRelease(MouseType type)
+void SSkyboxWindow::OnMouseRelease(MouseType type)
 {
 	mIsMousePressed[type] = false;
 }
 
-bool SWindow::IsValid()
+bool SSkyboxWindow::IsValid()
 {
 	return mWindow != NULL;
 }
 
-void SWindow::Exec()
+void SSkyboxWindow::Exec()
 {
 	//time
 	float deltaTime = 0.0f;	// Time between current frame and last frame
@@ -230,7 +230,7 @@ void SWindow::Exec()
 	}
 }
 
-void SWindow::processInput(float deltaTime)
+void SSkyboxWindow::processInput(float deltaTime)
 {
 	if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(mWindow, true);

@@ -1,17 +1,17 @@
 #pragma once
-#ifndef SWINDOWH
-#define SWINDOWH
+#ifndef SSKYBOXWINDOWH
+#define SSKYBOXWINDOWH
 #include "sWidget.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 
 class Camera;
-class SWindow :public SWidget
+class SSkyboxWindow :public SWidget
 {
 public:
-	SWindow(const unsigned int mW, const unsigned int mH, const char *title);
-	~SWindow();
+	SSkyboxWindow(const unsigned int mW, const unsigned int mH, const char *title);
+	~SSkyboxWindow();
 	virtual void OnMouseMove(double x, double y);
 	virtual void OnMousePress(MouseType type);
 	virtual void OnMouseRelease(MouseType type);
@@ -29,5 +29,5 @@ protected:
 
 	bool mIsClosed;
 };
-#endif // !SWINDOWH
+#endif // !SSKYBOXWINDOWH
 
