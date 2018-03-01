@@ -1,4 +1,4 @@
-#version 300 es
+#version 300 core
 uniform highp mat4 ViewProjVS;
 uniform highp vec4 CameraPosVS;
 uniform highp mat4 World;
