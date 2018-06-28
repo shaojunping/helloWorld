@@ -11,6 +11,7 @@
 #include "sprite_renderer.h"
 
 SpriteRenderer  *Renderer;
+GameObject      *Player;
 
 Game::Game(GLuint width, GLuint height)
 	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -21,11 +22,11 @@ Game::Game(GLuint width, GLuint height)
 Game::~Game()
 {
 	delete Renderer;
+	delete Player;
 }
 
 void Game::Init()
 {
-	
 	// Load shaders
 	ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
 	// Configure shaders
@@ -36,12 +37,11 @@ void Game::Init()
 	// Set render-specific controls
 	Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 	// Load textures
-	//ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
-	// Load textures
 	ResourceManager::LoadTexture("textures/background.jpg", GL_FALSE, "background");
 	ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
 	ResourceManager::LoadTexture("textures/block.png", GL_FALSE, "block");
 	ResourceManager::LoadTexture("textures/block_solid.png", GL_FALSE, "block_solid");
+	ResourceManager::LoadTexture("textures/paddle.png", true, "paddle");
 	// Load levels
 	GameLevel one; one.Load("levels/one.lvl", this->Width, this->Height * 0.5);
 	GameLevel two; two.Load("levels/two.lvl", this->Width, this->Height * 0.5);
@@ -52,6 +52,12 @@ void Game::Init()
 	this->Levels.push_back(three);
 	this->Levels.push_back(four);
 	this->Level = 1;
+
+	glm::vec2 playerPos = glm::vec2(
+		this->Width / 2 - PLAYER_SIZE.x / 2,
+		this->Height - PLAYER_SIZE.y
+	);
+	Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
 }
 
 void Game::Update(GLfloat dt)
@@ -62,7 +68,21 @@ void Game::Update(GLfloat dt)
 
 void Game::ProcessInput(GLfloat dt)
 {
-
+	if (this->State == GAME_ACTIVE)
+	{
+		GLfloat velocity = PLAYER_VELOCITY * dt;
+		// Move playerboard
+		if (this->Keys[GLFW_KEY_A])
+		{
+			if (Player->Position.x >= 0)
+				Player->Position.x -= velocity;
+		}
+		if (this->Keys[GLFW_KEY_D])
+		{
+			if (Player->Position.x <= this->Width - Player->Size.x)
+				Player->Position.x += velocity;
+		}
+	}
 }
 
 void Game::Render()
@@ -76,5 +96,7 @@ void Game::Render()
 		);
 		// Draw level
 		this->Levels[this->Level].Draw(*Renderer);
+		// Draw Player
+		Player->Draw(*Renderer);
 	}
 }
