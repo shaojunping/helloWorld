@@ -30,6 +30,9 @@
     <ClInclude Include="..\helloworld\stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp">
@@ -51,6 +54,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\helloworld\glad.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

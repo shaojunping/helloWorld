@@ -30,9 +30,9 @@ Shader ResourceManager::GetShader(std::string name)
 	return Shaders[name];
 }
 
-Texture2D ResourceManager::LoadTexture(const GLchar *file, std::string name)
+Texture2D ResourceManager::LoadTexture(const GLchar *file, GLboolean alpha, std::string name)
 {
-	Textures[name] = loadTextureFromFile(file);
+	Textures[name] = loadTextureFromFile(file, alpha);
 	return Textures[name];
 }
 
@@ -95,15 +95,15 @@ Shader ResourceManager::loadShaderFromFile(const GLchar *vShaderFile, const GLch
 	return shader;
 }
 
-Texture2D ResourceManager::loadTextureFromFile(const GLchar *file/*, GLboolean alpha*/)
+Texture2D ResourceManager::loadTextureFromFile(const GLchar *file, GLboolean alpha)
 {
 	// Create Texture object
 	Texture2D texture;
-	/*if (alpha)
+	if (alpha)
 	{
 		texture.Internal_Format = GL_RGBA;
 		texture.Image_Format = GL_RGBA;
-	}*/
+	}
 	// Load image
 	int width, height, nrChannels;
 	unsigned char* image = stbi_load(file, &width, &height, &nrChannels, 0); 
