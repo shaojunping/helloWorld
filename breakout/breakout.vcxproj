@@ -120,19 +120,23 @@
   <ItemGroup>
     <ClInclude Include="..\helloworld\stb_image.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="game_object.h" />
     <ClInclude Include="resource_manager.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="sprite_renderer.h" />
     <ClInclude Include="texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\helloworld\glad.c" />
     <ClCompile Include="..\helloworld\stb_img.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="sprite_renderer.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,4 +1,4 @@
-#include "SpriteRenderer.h"
+#include "sprite_renderer.h"
 
 
 SpriteRenderer::SpriteRenderer(Shader &shader)

@@ -30,7 +30,13 @@
     <ClInclude Include="..\helloworld\stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRenderer.h">
+    <ClInclude Include="game_object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevel.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,7 +62,13 @@
     <ClCompile Include="..\helloworld\glad.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteRenderer.cpp">
+    <ClCompile Include="sprite_renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLevel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
